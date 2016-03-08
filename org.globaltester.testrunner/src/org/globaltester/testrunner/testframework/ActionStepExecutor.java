@@ -1,7 +1,7 @@
 package org.globaltester.testrunner.testframework;
 
 import org.globaltester.logging.logger.TestLogger;
-import org.globaltester.testmanager.testframework.ScriptRunner;
+import org.globaltester.testrunner.ScriptRunner;
 import org.globaltester.testrunner.testframework.Result.Status;
 import org.globaltester.util.StringUtil;
 import org.mozilla.javascript.EvaluatorException;
