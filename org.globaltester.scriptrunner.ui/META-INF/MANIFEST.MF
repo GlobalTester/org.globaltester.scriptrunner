@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GT ScriptRunner UI
+Bundle-SymbolicName: org.globaltester.scriptrunner.ui;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Activator: org.globaltester.scriptrunner.ui.Activator
+Bundle-Vendor: HJP Consulting GmbH
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.globaltester.logging.legacy,
+ org.globaltester.smartcardshell,
+ org.globaltester.smartcardshell.ui,
+ org.eclipse.debug.ui,
+ org.globaltester.scriptrunner,
+ org.globaltester.base.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.globaltester.scriptrunner.ui,
+ org.globaltester.scriptrunner.ui.commands
