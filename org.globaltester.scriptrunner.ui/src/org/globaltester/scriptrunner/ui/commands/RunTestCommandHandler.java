@@ -8,10 +8,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.EditorPart;
 import org.globaltester.base.ui.GtUiHelper;
 import org.globaltester.scriptrunner.TestResourceExecutor;
 
@@ -72,6 +75,13 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 	protected abstract TestResourceExecutor getExecutor();
 
 	protected IFile getFileFromEditor(IWorkbenchPart activePart){
+		if (activePart instanceof EditorPart){
+			EditorPart editor = (EditorPart) activePart;
+			if (editor.getEditorInput() instanceof IPathEditorInput ){
+				IPathEditorInput input = (IPathEditorInput) editor.getEditorInput();
+				return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(input.getPath());
+			}
+		}
 		return null;
 	};
 }
