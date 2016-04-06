@@ -308,4 +308,14 @@ public class ScriptRunner implements FileEvaluator {
 		return runners.get(context);
 	}
 
+	/**
+	 * Return the configuration object associated with the given key.
+	 * <p/>
+	 * @see java.util.Map#get(Object)
+	 */
+	public Object getConfigurationObject(Class<?> key) {
+		if (configurationObjects == null) return null;
+		return configurationObjects.get(key);
+	}
+
 }
