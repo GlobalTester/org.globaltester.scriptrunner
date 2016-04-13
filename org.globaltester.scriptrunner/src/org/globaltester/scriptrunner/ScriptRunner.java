@@ -116,8 +116,8 @@ public class ScriptRunner implements FileEvaluator {
 
 	private void injectConfiguration() {
 		for (Class<?> key : configurationObjects.keySet()) {
-			Object wrappedCardConfig = Context.javaToJS(configurationObjects.get(key), scope);
-			ScriptableObject.putProperty(scope, "_" + key.getCanonicalName().replace('.', '_'), wrappedCardConfig);
+			Object wrappedSampleConfig = Context.javaToJS(configurationObjects.get(key), scope);
+			ScriptableObject.putProperty(scope, "_" + key.getCanonicalName().replace('.', '_'), wrappedSampleConfig);
 		}
 	}
 
