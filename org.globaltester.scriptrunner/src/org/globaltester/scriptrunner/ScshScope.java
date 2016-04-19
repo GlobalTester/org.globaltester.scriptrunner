@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.globaltester.logging.legacy.logger.TestLogger;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
@@ -45,7 +47,7 @@ public class ScshScope extends ImporterTopLevel implements GPRuntime {
 	public static void load(Context cx, Scriptable thisObj, Object[] args,
 			Function funObj) {		
 		if (args.length > 0){
-			IProject project = findProjectWithName(Context.toString(args[0]));
+			IContainer project = findContainerWithName(cx, Context.toString(args[0]));
 			if (project != null){
 				for (int i = 1; i < args.length; i++) {
 					String fileName = Context.toString(args[i]);
@@ -106,12 +108,22 @@ public class ScshScope extends ImporterTopLevel implements GPRuntime {
 	 * @return the project with the given name or null if no such project could
 	 *         be found
 	 */
-	private static IProject findProjectWithName(String name) {
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
-		for (IProject project : projects) {
-			if (project.getName().equals(name)) {
-				return project;
+	private static IContainer findContainerWithName(Context cx, String name) {
+		IResource [] members;
+		IContainer root = ScriptRunner.getRunnerForContext(cx).getScriptRoot();
+		if (root == null){
+			members = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		} else {
+			try {
+				members = root.members();
+			} catch (CoreException e) {
+				return null;
+			}
+		}
+		
+		for (IResource resource : members) {
+			if (resource instanceof IContainer && resource.getName().equals(name)) {
+				return (IContainer)resource;
 			}
 		}
 		return null;
@@ -132,7 +144,7 @@ public class ScshScope extends ImporterTopLevel implements GPRuntime {
 			Function funObj) {
 		
 		if (args.length > 0){
-			IProject project = findProjectWithName(Context.toString(args[0]));
+			IContainer project = findContainerWithName(cx, Context.toString(args[0]));
 			if (project != null){
 				return project.getLocation().toOSString();
 			}
