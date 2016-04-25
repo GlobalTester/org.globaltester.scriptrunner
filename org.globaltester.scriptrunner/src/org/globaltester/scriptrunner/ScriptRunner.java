@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.globaltester.logger.TestLogger;
+import org.globaltester.logging.legacy.logger.TestLogger;
 import org.globaltester.smartcardshell.jsinterface.RhinoJavaScriptAccess;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
