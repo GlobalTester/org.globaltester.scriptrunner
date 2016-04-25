@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
 import org.globaltester.logging.legacy.logger.TestLogger;
 import org.globaltester.smartcardshell.jsinterface.RhinoJavaScriptAccess;
 import org.mozilla.javascript.Context;
@@ -55,8 +55,7 @@ public class ScriptRunner implements FileEvaluator {
 
 	// Active directories
 	private File currentWorkingDir; // Current working directory
-	private File userDir; // User directory
-	private File systemDir; // System (executable) directory
+	private IContainer scriptRootDir;
 
 	private Map<Class<?>, Object> configurationObjects;
 	private List<Runnable> cleanupHooks = new LinkedList<>();
@@ -69,8 +68,9 @@ public class ScriptRunner implements FileEvaluator {
 	 * @param scriptPath
 	 *            path where the scripts could be found
 	 */
-	public ScriptRunner(String scriptPath, Map<Class<?>, Object> configurationObjects) {
+	public ScriptRunner(IContainer scriptRoot, String scriptPath, Map<Class<?>, Object> configurationObjects) {
 		currentWorkingDir = new File(scriptPath);
+		scriptRootDir = scriptRoot;
 		this.configurationObjects = configurationObjects;
 	}
 
@@ -90,8 +90,6 @@ public class ScriptRunner implements FileEvaluator {
 	public void init(ScriptableObject scope) {
 		this.scope = scope;
 		try {
-			userDir = currentWorkingDir;
-			systemDir = userDir;
 			// Initialize ECMAScript environment
 			RhinoJavaScriptAccess rhinoAccess = new RhinoJavaScriptAccess();
 			context = rhinoAccess.activateContext();
@@ -214,19 +212,19 @@ public class ScriptRunner implements FileEvaluator {
 	 * 
 	 * @param cx
 	 *            current context
-	 * @param parentProject
-	 *            the parent project the given filename is relative to
+	 * @param parentContainer
+	 *            the parent container the given filename is relative to
 	 * @param filename
 	 *            file to load and execute
 	 */
-	public void evaluateFile(IProject parentProject, String filename) {
+	public void evaluateFile(IContainer parentContainer, String filename) {
 
 		FileReader in = null;
 
 		File file = new File(filename);
 		
-		if (parentProject != null) {
-			file = new File(parentProject.getLocation().toOSString() + File.separator + filename);
+		if (parentContainer != null) {
+			file = new File(parentContainer.getLocation().toOSString() + File.separator + filename);
 		} else {
 			if (!file.isAbsolute()){
 				file = new File(this.currentWorkingDir + File.separator + filename);	
@@ -282,11 +280,11 @@ public class ScriptRunner implements FileEvaluator {
 	}
 
 	public File getUserDir() {
-		return userDir;
+		return scriptRootDir.getLocation().toFile();
 	}
 
 	public File getSystemDir() {
-		return systemDir;
+		return scriptRootDir.getLocation().toFile();
 	}
 
 	public void addCleanupHook(Runnable hook) {
@@ -316,6 +314,10 @@ public class ScriptRunner implements FileEvaluator {
 	public Object getConfigurationObject(Class<?> key) {
 		if (configurationObjects == null) return null;
 		return configurationObjects.get(key);
+	}
+
+	public IContainer getScriptRoot() {
+		return scriptRootDir;
 	}
 
 }

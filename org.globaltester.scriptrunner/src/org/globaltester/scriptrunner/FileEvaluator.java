@@ -2,7 +2,7 @@ package org.globaltester.scriptrunner;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
 
 /**
  * Implementations of this interface are expected to evaluate script files and
@@ -33,10 +33,10 @@ public interface FileEvaluator {
 	 * This evaluates a script file while updating the working directory
 	 * accordingly.
 	 * 
-	 * @param parentProject
+	 * @param parentContainer
 	 * 
 	 * @param filename
-	 *            the script files path relative to the given parentProject
+	 *            the script files path relative to the given parentContainer
 	 */
-	public void evaluateFile(IProject parentProject, String filename);
+	public void evaluateFile(IContainer parentContainer, String filename);
 }
