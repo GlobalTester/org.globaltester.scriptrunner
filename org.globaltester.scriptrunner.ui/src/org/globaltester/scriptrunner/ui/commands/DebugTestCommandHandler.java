@@ -30,6 +30,7 @@ import org.globaltester.smartcardshell.ui.RhinoDebugLaunchManager;
  * @author akoelzer
  * 
  */
+@SuppressWarnings("restriction")
 public class DebugTestCommandHandler extends RunTestCommandHandler {
 
 	/**
