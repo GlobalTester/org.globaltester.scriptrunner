@@ -13,5 +13,6 @@ import org.eclipse.core.resources.IResource;
  *
  */
 public interface TestResourceExecutor {
+	public boolean canExecute(List<IResource> resources);
 	public Object execute(List<IResource> resources, Map<?, ?> map);
 }

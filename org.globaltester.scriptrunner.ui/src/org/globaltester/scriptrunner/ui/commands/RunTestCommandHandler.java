@@ -1,6 +1,8 @@
 package org.globaltester.scriptrunner.ui.commands;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -9,6 +11,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPathEditorInput;
@@ -17,6 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.globaltester.base.ui.GtUiHelper;
 import org.globaltester.scriptrunner.TestResourceExecutor;
+import org.osgi.framework.Bundle;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
 	/**
@@ -62,17 +66,40 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			return null;
 		}
 		
-		TestResourceExecutor exec = getExecutor();
+		TestResourceExecutor [] exec = getExecutors();
 		
 		try{
-			return exec.execute(resources, event.getParameters());
+			for (TestResourceExecutor current : exec){
+				if (current.canExecute(resources)){
+					return current.execute(resources, event.getParameters());
+				}
+			}
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
 			return null;
 		}
+		GtUiHelper.openErrorDialog(shell, "Running failed, no applicable executors found for this selection");
+		return null;
 	}
 	
-	protected abstract TestResourceExecutor getExecutor();
+	protected TestResourceExecutor [] getExecutors(){
+		Bundle testmanagerBundle = Platform.getBundle("org.globaltester.testmanager.ui");
+		Bundle testrunnerBundle = Platform.getBundle("org.globaltester.testrunner.ui");
+
+		List<TestResourceExecutor> executors = new ArrayList<>();
+		
+		try {
+			executors.add((TestResourceExecutor) testmanagerBundle.loadClass("org.globaltester.testmanager.ui.TestManagerExecutor").newInstance());
+		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			// Do nothing, this solution is to be replaced by using a service based approach
+		}
+		try {
+			executors.add((TestResourceExecutor) testrunnerBundle.loadClass("org.globaltester.testrunner.ui.TestRunnerExecutor").newInstance());
+		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			// Do nothing, this solution is to be replaced by using a service based approach
+		}
+		return executors.toArray(new TestResourceExecutor [executors.size()]);
+	}
 
 	protected IFile getFileFromEditor(IWorkbenchPart activePart){
 		if (activePart instanceof EditorPart){

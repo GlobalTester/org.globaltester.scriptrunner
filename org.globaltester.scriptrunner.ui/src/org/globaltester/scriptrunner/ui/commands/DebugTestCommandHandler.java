@@ -15,7 +15,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.globaltester.base.ui.GtUiHelper;
 import org.globaltester.logging.legacy.logger.GTLogger;
 import org.globaltester.logging.legacy.logger.GtErrorLogger;
-import org.globaltester.scriptrunner.TestResourceExecutor;
 import org.globaltester.scriptrunner.ui.Activator;
 import org.globaltester.smartcardshell.jsinterface.RhinoJavaScriptAccess;
 import org.globaltester.smartcardshell.ui.RhinoDebugLaunchManager;
@@ -275,11 +274,5 @@ public class DebugTestCommandHandler extends RunTestCommandHandler {
 			//exc.printStackTrace();
 			throw new RuntimeException(errorMsg, exc);
 		}
-	}
-
-	@Override
-	protected TestResourceExecutor getExecutor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
