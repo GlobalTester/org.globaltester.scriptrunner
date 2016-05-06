@@ -1,3 +1,492 @@
+Version 3.1.0 (06.05.2016)
+
+* Use reflection to find test executors
+* Merge remote-tracking branch 'origin/usr/amay/removeServerMode'
+* Suppress last warnings
+* Merge remote-tracking branch 'origin/usr/mboonk/profiles'
+* Merge branch 'usr/jkoch/fixLogging'
+* Merge TestLogger classes
+* Allows running test scripts with arbitrary script root directory
+* Use legacy logger
+* Merge branch 'usr/amay/renameConfigObject'
+* Refactor CardConfig
+* Resolves name clash of legacy logging packages
+* Merge remote-tracking branch 'origin/usr/mboonk/qaSprint15'
+* Set all build relevant settings to Java 1.8
+* Merge branch 'usr/amay/icsIntegration'
+* Make configuration parameters accessible
+* Merge branch 'usr/cstroh/opensourcingPlatform'
+* Add LICENSE and NOTICE to build.properties
+* Add LICENSE and NOTICE files for our code
+* Add LICENSE and NOTICE files to gitattributes
+* Add README.md to repository
+* added qualifier to pom and manifest
+* removed and corrected plugin id
+* getFileFromEditor now returns the selected IFile
+* Extracted new bundle o.g.scriptrunner from o.g.testrunner
+* Removes the dependencies from o.g.testrunner to o.g.testmanager
+* Removes the dependencies from o.g.testrunner to o.g.testmanager
+* Moved the ScriptRunner class to org.globaltester.testrunner
+* Seperates the GPRuntime from the ScriptRunner
+* Consolidated test case execution for all existing formats
+* Mode switching between using campaigns or not is possible
+* Execute test manager for GT2 test cases and test runner for all others
+* Moved the TestManager execution action into the TestRunner bundle
+* Merge remote-tracking branch 'origin/usr/mboonk/fixFileEndings'
+* Added missing line endings at the end of text files
+* Remove warnings
+* Merge remote-tracking branch 'origin/usr/mboonk/hotfix821'
+* Organizes imports
+* Merge remote-tracking branch 'origin/usr/cstroh/fixGitAttributes'
+* Merge branch 'usr/cstroh/updateHelp'
+* Replace gitattributes by file from o.g.dev
+* Merge branch 'usr/jgoeke/fileEnding'
+* Fixed line endings
+* Hook in missing testrunner preference page help entry
+* changed file endings from xml to .gt, .gtsuite or .gtcampaign
+* Merge remote-tracking branch 'origin/usr/cstroh/releaseTestsPlatform'
+* Merge branch 'usr/cstroh/preferenceTrees'
+* releaseTest.md for org.globaltester.testrunner
+* Merge remote-tracking branch 'origin/usr/cstroh/facelift'
+* Releaseprep
+* Updated the changelog
+* Move GT3 testrunner preference page to correct preference tree
+* Remove obsolete non-project directory
+* Changed labels of popup menu entries for running/debug tests
+* Merge remote-tracking branch 'origin/usr/slutters/enforceNamingConventions'
+* updated Bundle-Name to match naming conventions
+* removed obsolete files
+* added missing .project file
+* added missing Bundle-Vendor
+* renamed/modified files to match Bundle-SymbolicName
+* updated project path to match Bundle-SymbolicName
+* fix line endings
+* Updated Bundle-Name to match naming conventions
+* Merge remote-tracking branch 'origin/usr/slutters/bundleNamingConsistency'
+* updated repo .gitignore
+* added missing .gitattributes
+* added missing "Bundle-Vendor: HJP Consulting GmbH"
+* Merge branch 'usr/jkoch/replace_smartcardshell'
+* Merge remote-tracking branch 'origin/usr/cstroh/uxConsolidation'
+* Remove outdated content from help
+* Move Scriptrunner (and unit test) from org.gt.smartcardshell
+* remove obsolete version constraints from MANIFEST
+* Updated the product changelog and all versions
+* Updated the changelog
+* removed version number from dependencies for product builds
+* move start of OCF
+* Start OCF when needed
+* Fixed the feature based launch by replacing imported bundles with bundle dependencies
+* Merge remote-tracking branch 'origin/usr/jgoeke/integrationGT3'
+* Remove bin from build properties
+* Renamed .test to .integrationtest (due to SWTBot tests)
+* Add target folder to gitignore
+* Use JavaSE-1.7
+* added pom files
+* move existing logging infrastructure to logging legacy
+* ignore bin directories
+* Merge remote-tracking branch 'org.globaltester.testrunner.ui.test/master'
+* Merge remote-tracking branch 'org.globaltester.testrunner.ui/master'
+* Merge remote-tracking branch 'org.globaltester.testrunner.test/master'
+* Merge remote-tracking branch 'org.globaltester.testrunner.doc/master'
+* adjust repo structure
+* adjust repo structure
+* adjust repo structure
+* adjust repo structure
+* adjust repo structure
+* Convert svn:ignore properties to .gitignore.
+* Convert svn:ignore properties to .gitignore.
+* Convert svn:ignore properties to .gitignore.
+* More comments added for testing the XML converter
+* numLoop had accidently be set to 7; reset to 3!
+* JavaDoc update: Note on working with more source lookup paths added.
+* setupEnvironment() moved in file
+* - RhinoDebugLaunchManager.writeLaunchConfigFile (called in initDebugLaunchConfiguration) throughs IOException instead of FileNotFoundException, since this is more - class JSDebugLogger deleted - comments updated
+* - method activateContext() considers the constructor settings instead of having its own environment settings in the interface
+* - no more instance variable envSettings; local variable in execute() instead - setupEnvironment() has these envSettings in its interface now - JavaDoc and comments updated - setting up environment variables is now done in setupEnvironment() instead of startRhinoDebugLaunch(). Therefore the interface was changed.
+* - no more instance variable envSettings; local variable in execute() instead - setupEnvironment() has these envSettings in its interface now - JavaDoc and comments updated
+* Review, added some tasks
+* notes on automatically created debug launch configuration added
+* - interfaces changed: environment settings can now be reached through from DebugCommandHandler to Rhino accessing classes by a hash map containing port number, source lookup path etc. - additional method setupEnvironment for this - isDebugMode() deleted - comments updated - exception handling revised
+* - interfaces changed: environment settings can now be reached through from DebugCommandHandler to Rhino accessing classes by a hash map containing port number, source lookup path etc. - additional method setupEnvironment for this - isDebugMode() deleted - comments updated
+* - interfaces changed: environment settings can now be reached through from DebugCommandHandler to Rhino accessing classes by a hash map containing port number, source lookup path etc. - exception handling revised - exitContext done in finally block
+* - interfaces changed: environment settings can now be reached through from DebugCommandHandler to Rhino accessing classes by a hash map containing port number, source lookup path etc.
+* Review
+* Comments updated
+* null test in getLastCardConfigFromTestCampaignProject() deleted since this could hide the null pointer exception which once occurred.
+* Comments updated
+* Comments updated and some traces commented out.
+* - method getSourceLookupRoot() moved to DebugCommandHandler - startRhinoDebugLaunch() throws a RuntimeException now so that execution of test cases can be aborted in case the launch could not be started - simple test interface for calling the RhinoJavaScriptAccess.XML2JSConverter() added as comment - comments updated
+* - RhinoJavaScriptAccess moved to new package jsinterface - method getResource() added to be able to set the currently selected resource for RhinoJavaScriptAccess and ConvertFileReader - startRhinoDebugLaunch() throws a RuntimeException now so that execution of test cases can be aborted in case the launch could not be started - simple test interface for calling the RhinoJavaScriptAccess.XML2JSConverter() added as comment - comments updated
+* RhinoJavaScriptAccess moved to new package jsinterface.
+* - the execute method is now cancelled in case the context could not be activated
+* Comments updated
+* Comments updated
+* - path to the currently selected resource is added now as source lookup path to the launch configuration file - comments updated
+* - getSourceLookupRoot() added to retrieve the path to the currently selected resource. This is needed as source lookup path for the launch configuration file. - comments updated
+* Different method used for initializing the launch configuration (if there was none, one will be created)
+* - new overridden method startRhinoDebugLaunch() which is empty for RunTestCommandHandler, but evokes the debug launch for DebugTestCommandHandler. - prepareExecution for card selection has been deleted. - some reformatting done - activator changed to the correct one for this plugin - loop number for waiting for launching reduced to 3 again - constructor deleted since it was obsolete meanwhile - logging and error messages to user adapted - no more execute method, since super-execute completely handles what to do now
+* - member variable "shell" is protected now and initialized to be able to test if it is valid in derived classes and use it there - new overridden method startRhinoDebugLaunch() which is empty for RunTestCommandHandler, but evokes the debug launch for DebugTestCommandHandler. - prepareExecution for card selection has been deleted. The structure of execute is at is was before prepareExecution was introduced with an additional call to the new method startRhinoDebugLaunch() before tests are executed. - some reformatting done
+* TODO comment added
+* - Update of comments/log messages - catch for InterruptedException added
+* org.eclipse.debug.ui added for access to display for Rhino launcher
+* - reset of executionPrepared added, since otherwise card configuration is not called on the next test run
+* - starting debug launch thread with asyncExec instead of start to make it UI thread is done here again instead of RhinoDebugLaunchManager - More logging and traces added
+* - Some initial actions such as selecting the card configuration were extracted to a new method prepareExecution. This is called by both now - Debug- and RunTestCommandHandler. Thus if there was an error in the initial phase, the debugger will not be called.
+* - Unnecessary import deleted - Comments updated - Logging added with GT[Error]Logger - Traces are printed to console, since there are still synchronization problems for the launch thread. - Some initial actions such as selecting the card configuration were extracted to a new method prepareExecution. This is called by both now - Debug- and RunTestCommandHandler. Thus if there was an error in the initial phase, the debugger will not be called.
+* TODO/comment added because error handling should probably be improved
+* TODO/comment added because flow structure could possibly be improved
+* Note on changing the port number for debugging socket communication added.
+* - exceptions when activating the context are now handled explicitly and logged with GTLogger and GtErrorLogger
+* - debugMode is no longer a member variable but is returned as a constant (true) in isDebugMode - some println added to be able to follow what is executed
+* debugMode is no longer a member variable but is returned as a constant (false) in isDebugMode
+* - New order for variables and methods according to programming guidelines - Comments updated - Constant values extracted and defined as static members - Launch thread is a non-anonymous instance now, given a name
+* TODO deleted: Exception will not be rethrown since this breaks the program flow of collecting results.
+* Comments updated and reformatted to keep blocks together and make the structure more transparent.
+* Manual for using the JavaScript debugger added in section Execute TestCases.
+* Comment adapted because of use of interface object which indicates that debugger was already started.
+* RhinoDebugLaunchManager moved from smartcardshell to smartcardshell.ui
+* Members of class RhinoJavaScriptAccess are not static anymore in order to be able to work with several debuggers and contexts.
+* Commented code parts deleted.
+* smartcardshell added to dependencies
+* This handler starts the Rhino debugger launch in a separate thread now in its execute method.
+* - Import-Package settings deleted - org.mozilla.javascript moved to Require-Bundle - dependency to rhino.debugger is not needed anymore (moved to smartcardshell)
+* RhinoDebugLaunchManager has been moved to smartcardshell now
+* - unnecessary imports deleted; necessary ones added - code for handling JavaScript access has been moved to smartcardshell - RhinoJavaScriptAccess now
+* Convert svn:ignore properties to .gitignore.
+* Convert svn:ignore properties to .gitignore.
+* Class loader added for context factory which solves the class loader problem in org.mozilla.javascript
+* Clean up added in case that debug launch could not be started.
+* Java doc comments for class and members added.
+* The port number for connecting the debugger thread and the debug launch thread is now read from the debug configuration file "runJSDebugger".
+* Some restructuring TODOs/notes added debug launch is called now!
+* Some restructuring TODOs/notes added debug launch is called now!
+* org.eclipse.debug.ui added to required plugins for Rhino debugger
+* Integration of Rhino debug launch manager started
+* TODO added: currently unclear if exception should be rethrown
+* This module implements the automatic invocation of the debug launch for the Rhino JavaScript debugger.
+* bug fix: test on cardconfig==null added
+* member debugMode should be protected
+* Create only one factory and add the debugger if needed
+* import the org.mozilla.javascript package to get the classloader to know the Context class
+* Use getter and setter for the debug mode
+* Rhino debugger package added
+* Debug flag added to method execute
+* Methods added and settings changed in order to be able to start Rhino debugger
+* Handler for JavaScript debugging changed to new class DebugTestCommandHandler
+* Class derived from RunTestCommandHandler with additional settings for use of Rhino debugger (currently only an additional debug flag is implemented)
+* new menu item added to be able to distinguish between debug and non-debug mode for JavaScript debugging; currently this still calls RunTestCommandHandler (impl. not ready)
+* boolean member debugMode added to be able to distinguish between debug and non-debug mode for JavaScript debugging; typo corrected
+* Objects of type Context are now created with the help of a ContextFactory in order to be able to add a listener for the Rhino debugger
+* boolean parameter added to method executeTest to be able to distinguish between debug and non-debug mode for JavaScript debugging
+* icon to be displayed in the testrunner menues; used for JavaSctript debugging calls
+* - Hints on smart card reader list (manual setting) added - Reformulations - path names for ePassport_- and nPA_Application updated
+* Correction of some typos plus some reformulations
+* Again ignoring cheat sheet tests
+* reactivation of cheatsheet tests
+* ignore cheat sheet test
+* server build testcase debugging
+* server build testcase debugging
+* server build testcase debugging
+* server build testcase debugging
+* server build testcase debugging
+* ignore cheat sheet test
+* meaningful names for the screenshots taken while ui testing, fixed typo
+* replacement of the patch fragment for SWTBot testing of native dialogs by methods in GtUiHelper
+* added org.globaltester.platform to all test launch configurations
+* added org.globaltester.platform to all test launch configurations
+* Initial commit of org.globaltester.testrunner.ui.test containing cheatsheet tests
+* Share project "org.globaltester.testrunner.ui.test" into "http://subversion/repo/globaltester"
+* revert of accidentally commited MANIFEST files and screenshots
+* removal of unneccesary implemented interface
+* Release 3.0.2 of GlobalTester
+* Release 3.0.2 of GlobalTester
+* Release 3.0.2 of GlobalTester
+* Release 3.0.1
+* update references to other plug-ins from relative to absolute paths
+* fix for growing combobox in testcampaign editor
+* allow execution of RunTestCommand from TestSpecEditor
+* mark FileBuffer dirty according to open editor in order to warn user when modified and unsaved resource should be deleted
+* minor corrections in UserGuide
+* test report export: check for directory
+* Add section to describe browsing of different TestCampaignExecutions
+* update user message when Editor can not be opened because of wrong input
+* fix persistence attribute for failure markers
+* implement command parameter to force manual selection of CardConfig
+* Report progressbar, warning if file exists and confirmation when successfully exported
+* Remoce CardConfigSelector from TestCampaignEditor
+* allow execution of existing TestCampaign from selection in GTNavigator
+* allow execution of existing TestCampaign from selection in GTNavigator
+* display tescase names in monitor while executing
+* make sure editor widgets are updated only when they are not yet disposed
+* fix logging failure from earlier commit
+* Fix Result implementation to be UNDEFINED when SubResult is UNDEFINED and no WARNING or FAILURE exists
+* update TestCampaignEditor ScrolledConent size on update of contents
+* make TestCampaignExecution always display all subexecutions (maybe wit undefined result)
+* add FailureMarker to Logfiles
+* update user message strings
+* implement setFocus in order to allow activation of NavigatorView when TestCampaignEditor was just openend
+* Add EditorMatchingStrategy to TestCampaignEditor in order to allow reuse of restored Editors
+* remove horizontal scrollBar in TreeViewer
+* allow opening of empty logfiles in correct editor
+* add ProgressMonitor support for test execution (tests need to be discussed)
+* add ProgressMonitor support for test execution (tests need to be discussed)
+* disable showSpecAction and showLogfileAction when they are not available
+* remove redundant time format definitions in o.g.core and o.g.logging
+* add TestCampaignExecution to TreeViewer in TestCampaignEditor in order to make Comment and Status editable
+* add TestCampaignExecution to TreeViewer in TestCampaignEditor in order to make Comment and Status editable
+* remove Scrollbar in ExecutionStateTree
+* fixes for CommandExecution on empty or incompatible selection
+* Default select CardConfig from lastExecution in TestCampaignEditor
+* close TestCampaignEditor when Resource is deleted
+* allow RunTestCommandHandler to use selected TestCampaign and CardConfig from TestCampaignEditor
+* corrected tags in cheatsheets
+* fix for testCampaign xml file beeing out of sync after saving and restarting GT
+* removed workaround for assert error while clicking on comment fields
+* comments are read from xml files
+* reduce constructors to use each other in a consistent way
+* extraction of actionsteps from xml files only set campaign editor dirty
+* extraction of actionsteps from xml files only set campaign editor dirty
+* add TestSpec import banner and Title text
+* minor visual improvements
+* comment column in testcampaign editor editable and persisted
+* comment column in testcampaign editor editable and persisted
+* adjust UI to common eclipse best practices (alignment and border modifications)
+* Evaluate overall result of TestCampaignExecution
+* add scrollbars to TestCampaignEditor when needed
+* adjust layout to fit in given bounds w/o overflowing elements
+* display status of action steps in tree viewer and of campaign in execution selector (currently all values are undefined)
+* remove duplicate information in logfile
+* make execution result tree grab existing space
+* make coloumn width auto adjust to window size, adjust several lables
+* move Execution button in same row as CardConfigSelector
+* bugfix: correct condition for type cast, remove redundant code
+* bugfix: open test case in test campaign: Dopple click(if preference is set) or right mouse click (open testcase)
+* allow openTestCase to handle FileTestExecutions and ActionStepExecutions properly
+* add ComboBox for navigation of TestCampaignExecutions in TestCampaignEditor
+* add ComboBox for navigation of TestCampaignExecutions in TestCampaignEditor
+* include icons folders in bin.includes to be available in binary product
+* include icons folders in bin.includes to be available in binary product
+* fix online help: remove dummy content and add valid content to binary build
+* fix for exception while creating a testcampaign without executing it
+* remove "unhandled" catch of an exception that is declared to be thrown anyhow
+* remove DefaultCardConfig, this was just a stub to make sure a default CardConfig is available, no this is no longer needed as creation of own CardConfigs is supported properly
+* remove DefaultCardConfig, this was just a stub to make sure a default CardConfig is available, no this is no longer needed as creation of own CardConfigs is supported properly
+* some code cleanup
+* update the editor when a new execution is created
+* minor code cleanup for readability and reduction of duplication
+* fix typo
+* lastExecution type changed and unnecessary casts deleted, generate report button creates report of currently displayed execution, cleanup
+* lastExecution type changed and unnecessary casts deleted, generate report button creates report of currently displayed execution, cleanup
+* updated help (references)
+* repair behave of open logFile in testcampaign
+* make CardConfigSelectionViewerDialog update on selection changes and remove obsolete buttons
+* ExecutCommand automatically use first CardConfig contained in selection (aks user if none is selected)
+* make CardConfig selectable when executing a TestCampaign
+* make sure that TestCampaignExecutions reference clones of the CardConfig so that this does not alter when the CardConfig in Workspace is changed
+* remove already fixed tasks
+* persist used CardConfig in TestCampaignExecutions (and update display of those in TestCampaignEditor on changed selection)
+* persist used CardConfig in TestCampaignExecutions (and update display of those in TestCampaignEditor on changed selection)
+* suppress a warning that is unavoidable because of return values of dom4j
+* remove unnecessary methods
+* remove unnecessary methods
+* history can be browsed stepwise, TestCampaignExecutions are persisted
+* history can be browsed stepwise, TestCampaignExecutions are persisted
+* refactored Resource operations to GtResourceHelper
+* previous executions are persisted
+* corrected XML structure dumped by TestCaseExecution
+* Add TestCampaignExecution to manage CardConfigs
+* Add TestCampaignExecution to manage CardConfigs
+* completed write a TestCase
+* Added dialog so that user gets informed why a testcampaign does not open when open testcase is selected or if no log file is existing when open log file is selected
+* removed try-catch block, moved test of TestCampaign to if-part (no TestCase should open when a TestCampaign is clicked)
+* cleaned up testrunner preferences (author and description of class)
+* cleaned up testrunner preferences (author and description of class)
+* cleaned up testrunner preferences
+* cleaned up testrunner preferences
+* moved preferences "single logfile for each testcase" back to loggin; cleaned up testrunner preferences
+* moved preferences "single logfile for each testcase" back to loggin; cleaned up testrunner preferences
+* add selection and modification of CardConfig in TestCampaignEditor
+* moved preferences "single logfile for each testcase" and "double click in result view opens" to preference page in testrunner
+* re-worked User Guide Help and CheatSheets
+* use CardConfigManager to get the CardConfig objects
+* extract initialization of Card from init of ScriptRunner to be more flexible w/ regard to CardConfiguration parameter
+* user guides execute TestCases and Create and export a TestSpec rewritten, minor corrections
+* reviewed Cheat Sheets execute TestCases, Import of a TestSpec, and UserGuide Import of a TestSpec
+* review of CheatSheet
+* added congrats text onCompletion
+* review of CheatSheet
+* enable logLineNumber access for TestCases and Actionsteps in TestCampaign log file if Preference "Single Log File for each TestCase" is not set
+* enable logLineNumber access for TestCases and Actionsteps in TestCampaign log file if Preference "Single Log File for each TestCase" is not set
+* get logFileName for TestCases and Actionsteps, even if Preference "single log files for each TestCase" is not set
+* working on help topics (concepts and gettingstarted)
+* working on help topics (reviewed and continued)
+* working on help topics (concepts and references)
+* persist ActionStepExecutions in XML-File, Restoring from that structure still needs to be implemented
+* working on help topics (concepts and references)
+* working on help topics (getting started and concepts)
+* Share project "org.globaltester.testrunner.doc" into "http://subversion/repo/globaltester"
+* Share project "org.globaltester.testrunner.doc" into "http://subversion/repo/globaltester"
+* fix inconsistent XML-Tag anmes
+* Deleted CR for logged APDU description
+* working on persistent access to log files
+* added preference what to show on double click
+* enhanced showFile methods
+* moved logFileLine to IExecution
+* Another correction in spelling
+* review of TestCaseExecution: getLogFileLine before TestCase is executed
+* Add NewTestCaseWizard
+* Correction in spelling
+* TestCampaignEditor UI: working on connecting test results with logfile and spec - completetd Moved LogFileLineNumbers to TestLogger
+* TestCampaignEditor UI: working on connecting test results with logfile and spec - completetd Moved LogFileLineNumbers to TestLogger
+* add Commands for TestExecution and TestCampaignCreatoin in the toolbar
+* working on ability to count line numbers for single test steps
+* working on ability to count line numbers for single test steps
+* began to add ability to count line numbers for single test steps
+* began to add ability to count line numbers for single test steps
+* TestCampaignEditor UI: working on connecting test results with logfile and spec added logFileName so that log file can be accessed
+* TestCampaignEditor UI: working on connecting test results with logfile and spec added logFileName so that log file can be accessed
+* working on connecting test results with logfile and spec
+* working on connecting test results with logfile and spec
+* add Create Testcampaign action for the menu //ToDo finalize run(IAction action) method
+* add Run Testcase action for the menu //ToDo finalize run(IAction action) method
+* if xml structure of testcase is corrupt this results in testresult status UNDEFINED! //ToDo add Comment: The structure of the xml file maybe not correct
+* if empty precondition nothing to execute if xml structure corrupt todo -> user warning
+* add support for Pre/PostConditions
+* add support for Pre/PostConditions
+* merge creation of a testCampaign from selection to a single method in the according command handler
+* Change TestCampaignEditorInput to subclass FileEditorInput
+* make header Image smaller in Testreport
+* removed wrong information
+* generate report only if a directory is selected
+* update Report header image
+* add icon to "Generate Report" button
+* remove permanently empty dirs
+* remove permanently empty dirs
+* associate icons
+* add coloring of TestExecutionParts in LogfileEditor
+* cleanup code output in logfile
+* remove test execution from the UI thread and move it into a new Job
+* remove test execution from the UI thread and move it into a new Job
+* remove unneeded restriction to file extension
+* code cleanup
+* make report location selectable
+* make report location selectable
+* Bugfix for result computation
+* update content types and file associations for TestCampaigns and TestSpecs
+* update content types and file associations for TestCampaigns and TestSpecs
+* update icons
+* update icons
+* add todo as hint for improvement
+* update testspec and testcampaign icons
+* spelling correction
+* associate icons with natures and editors
+* Add icons to TreeViewer in TestCampaignEditor
+* add result icons to reports
+* include results of TestCampaignElements in TestReport
+* include results of TestCampaignElements in TestReport
+* add new Header to PDF and XML reports
+* fix several findBugs warnings
+* fix several findBugs warnings
+* add support for TestSpecName and TestSpecVersion in TestCampaign and TestCampaignEditor
+* add support for TestSpecName and TestSpecVersion in TestCampaign and TestCampaignEditor
+* initial version of Report generation in the GUI
+* add report generation (XML and PDF) (initial version w/o content in report)
+* evaluate Asserts and allow correct calculation of TestResults from SubResults
+* persist results
+* modify default names of files in test campaign
+* modify default names of files in test campaign
+* Refactor TestExecution to FileTestExecution
+* Refactor TestExecution to FileTestExecution
+* Refactor TestExecutionFactory to FileTestExecutionFactory
+* change model object for TestCampaignTreeViewer from spec-Objects to Execution-Objects
+* change model object for TestCampaignTreeViewer from spec-Objects to Execution-Objects
+* remove already fixed task comment
+* show test steps in TestCampaignEditor
+* allow TestCampaigns with more than one TestCampaignElement
+* add TestStepResults as SubResults to TestCaseResult
+* implement compund results
+* allow Results to handle their own status
+* allow Results to handle their own status
+* reorder columns in TestCampaign TreeViewer
+* include default actions in menu
+* allow saving in TestCampaignEditor
+* make TestCampaignEditor default for TestCampaign content type
+* change file name for test campaign
+* associate TestCampaignEditor with TestCampaign files
+* associate TestCampaignEditor with TestCampaign files
+* display test results in TestCampaignEditor
+* store/restore Results with TestCampaigns and TestExecutions
+* enable recursive doSave for GtTestCampaignProject
+* enable recursive doSave for GtTestCampaignProject
+* add Listener/Observer pattern to allow automatic update of TestCampaignTreeViewer when model changes
+* add Listener/Observer pattern to allow automatic update of TestCampaignTreeViewer when model changes
+* show execution time of test cases in TestCampaignEditor
+* show execution time of test cases in TestCampaignEditor
+* fix deserialisation of TestCampaign
+* implement functionality for Execute-Button in TestCampaignEditor
+* allow deserialisation of TestCampaignElement
+* allow deserialisation of TestCampaignElement
+* make sure TestExecutable is not copied if already exists in TestCampaign
+* correct typo
+* add TestCampaignElement, to allow several Steps in one TestCampaign reference the same TestExecutable
+* add TestCampaignElement, to allow several Steps in one TestCampaign reference the same TestExecutable
+* remove DummyClasses for TreeViewer demo, show TestCampaign data in TreeViewer
+* connect TestEditor TreeViewer to real TestCampaign data
+* connect TestEditor TreeViewer to real TestCampaign data
+* extract TestCampaignContentProvider
+* extract TestCampaignTableLabelProvider
+* automtaic code cleanup
+* add buttonArea and metaData to the TestCampaignEditor
+* change test launch configs to use only the related product
+* allow centralized logging of exceptions that do not need further handling
+* allow centralized logging of exceptions that do not need further handling
+* automatically open editor after creation of TestCampaign project
+* refactor CreateExecutionProjectCommand to CreateTestCampaignCommand
+* add TestCampaignEditor
+* add TestCampaignEditor
+* fix FindBugs URF_UNREAD_FIELD
+* fix FindBugs ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD
+* add findbugs ant task
+* add findbugs ant task
+* add findbugs ant task
+* merge validation default to a single method in XMLHelper
+* remove warnings
+* print output for APDUCommands
+* allow execution of ExpectedResult-Elements
+* execute ExpectedResults
+* allow execution to produce failures
+* refresh the workspace after project creation
+* Refactor TestRunProject and Nature to TestCampaign
+* Refactor TestRunProject and Nature to TestCampaign
+* Refactor TestRunProject and Nature to TestCampaign
+* Persist TestExecutions in project.xml
+* Move logfiles for run individual folders
+* allow storage of execution states in GtTestRunProject and thus reuse of them after restart
+* allow storage of execution states in GtTestRunProject and thus reuse of them after restart
+* copy test specification to the GtTestRunProject when added, this makes it possible that versions can be checked later
+* enable direct execution of an TestSpec (this creates a RunProject on the fly)
+* add test step descriptions to log
+* enable different logfiles for different test executables
+* execute test steps from test spec
+* add commands to create and run execution configurations
+* add commands to create and run execution configurations
+* add commands to create and run execution configurations
+* adapt file structure to be created
+* adapt file structure to be created
+* Initial version containing command to create run config for test case
+* Share project "org.globaltester.testrunner.ui" into "http://subversion/repo/globaltester"
+* export packages that are needed by other plugins
+* remove bin directory in svn
+* corrected NatureID and testcases to be run
+* corrected NatureID and testcases to be run
+* initial import
+* initial import
+* Share project "org.globaltester.testrunner.test" into "http://subversion/repo/globaltester" Share project "org.globaltester.testrunner" into "http://subversion/repo/globaltester"
+* Share project "org.globaltester.testrunner.test" into "http://subversion/repo/globaltester" Share project "org.globaltester.testrunner" into "http://subversion/repo/globaltester"
+* Code maintenance
+
+
 Version 3.0.4 (18.02.2016)
 
 * updated Bundle-Name to match naming conventions
