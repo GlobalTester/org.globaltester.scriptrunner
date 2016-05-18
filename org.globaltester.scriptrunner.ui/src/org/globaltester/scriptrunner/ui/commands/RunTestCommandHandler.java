@@ -1,5 +1,7 @@
 package org.globaltester.scriptrunner.ui.commands;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -69,6 +73,26 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		TestResourceExecutor [] exec = getExecutors();
 		
 		try{
+			//clean the result view
+			IViewPart resultView = null;
+			IViewReference viewReferences[] = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getViewReferences();
+			for (int i = 0; i < viewReferences.length; i++) {
+				if ("org.globaltester.testmanager.views.ResultView".equals(viewReferences[i].getId())) {
+					resultView = viewReferences[i].getView(false);
+				}
+			}
+			if(resultView != null) {
+				try {
+					Bundle testmanagerBundle = Platform.getBundle("org.globaltester.testmanager");
+					Class<?> resultViewClass = testmanagerBundle.loadClass("org.globaltester.testmanager.views.ResultView");
+					Method reset = resultViewClass.getDeclaredMethod("reset");
+					reset.invoke(resultView);
+				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+			//execute test(s)
 			for (TestResourceExecutor current : exec){
 				if (current.canExecute(resources)){
 					return current.execute(resources, event.getParameters());
