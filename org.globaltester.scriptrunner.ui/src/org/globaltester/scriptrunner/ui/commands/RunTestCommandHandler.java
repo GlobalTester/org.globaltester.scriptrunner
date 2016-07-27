@@ -12,7 +12,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.globaltester.base.ui.GtUiHelper;
@@ -61,6 +63,30 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");
 			return null;
 		}
+
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+		// show result view in GT perspective
+		try {
+			page.showView("org.globaltester.testmanager.views.ResultView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+
+		// show problem view in GT perspective
+		try {
+			page.showView("org.eclipse.ui.views.ProblemView");
+		} catch (PartInitException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// show console view in GT perspective
+		try {
+			page.showView("org.eclipse.ui.console.ConsoleView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}		
 		
 		
 		try{
