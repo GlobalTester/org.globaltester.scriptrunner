@@ -15,7 +15,9 @@ Require-Bundle: org.eclipse.ui,
  org.globaltester.base.ui,
  org.eclipse.ui.workbench,
  org.globaltester.sampleconfiguration,
- org.globaltester.sampleconfiguration.ui
+ org.globaltester.sampleconfiguration.ui,
+ org.eclipse.equinox.preferences,
+ org.globaltester.base
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.globaltester.scriptrunner.ui,

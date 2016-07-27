@@ -18,9 +18,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
+import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.ui.GtUiHelper;
 import org.globaltester.sampleconfiguration.SampleConfig;
+import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
+import org.globaltester.scriptrunner.Activator;
 import org.globaltester.scriptrunner.RunTests;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
@@ -69,10 +72,14 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		
 		try{
 			new ShowTests().show(resources);
-			SampleConfig config = getSampleConfig();
+			
+			SampleConfig config = getSampleConfig(event);
+			
 			if (config == null){
 				return null;
 			}
+			
+			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
 			
 			new RunTests(config).execute(resources);
 			return null;
@@ -106,12 +113,21 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}	
 	}
 	
-	protected SampleConfig getSampleConfig() {
+	protected SampleConfig getSampleConfigFromDialog(){
 		SampleConfigSelectorDialog dialog = new SampleConfigSelectorDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell());
 		if (dialog.open() != Window.OK){
 			return null;
 		}
-		return dialog.getSelectedSampleConfig();
+		return dialog.getSelectedSampleConfig();		
+	}
+	
+	protected SampleConfig getSampleConfig(ExecutionEvent event) {
+		boolean selectionRequested = Boolean.parseBoolean(event.getParameter("org.globaltester.testrunner.ui.SelectSampleConfigParameter")); 
+		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
+		if (!selectionRequested && lastUsedProjectName != null && !lastUsedProjectName.isEmpty()){
+			return SampleConfigManager.get(lastUsedProjectName);
+		}
+		return getSampleConfigFromDialog();
 	}
 
 	protected IFile getFileFromEditor(IWorkbenchPart activePart){
