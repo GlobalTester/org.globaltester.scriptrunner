@@ -1,6 +1,7 @@
 package org.globaltester.scriptrunner.ui.commands;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -27,6 +28,8 @@ import org.globaltester.scriptrunner.Activator;
 import org.globaltester.scriptrunner.RunTests;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
+	private List<IResource> resources;
+	
 	/**
 	 * sets up environment, e.g. prepares settings for debugging threads and
 	 * launches and starts them, dependent on what is currently activated and
@@ -49,19 +52,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			return null;
 		}
 		
-		ISelection iSel = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getSelectionService()
-				.getSelection();
-		LinkedList<IResource> resources = GtUiHelper.getSelectedIResources(iSel, IResource.class);
-		
-		
-		if (resources.size() == 0){
-			//try to get file from editor
-			IFile file = getFileFromEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
-			if (file != null){
-				resources.add(file);
-			}
-		}
+		resources = createResourceList();
 		
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 		
@@ -76,6 +67,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			SampleConfig config = getSampleConfig(event);
 			
 			if (config == null){
+				GtUiHelper.openErrorDialog(shell, "Running failed: No sample config could be determined");
 				return null;
 			}
 			
@@ -87,6 +79,23 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
 			return null;
 		}
+	}
+	
+	private List<IResource> createResourceList(){
+		ISelection iSel = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getSelectionService()
+				.getSelection();
+		LinkedList<IResource> resources = GtUiHelper.getSelectedIResources(iSel, IResource.class);
+		
+		
+		if (resources.size() == 0){
+			//try to get file from editor
+			IFile file = getFileFromEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+			if (file != null){
+				resources.add(file);
+			}
+		}
+		return resources;
 	}
 
 	protected void modifyWorkbench() {
@@ -121,11 +130,16 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		return dialog.getSelectedSampleConfig();		
 	}
 	
+	protected SampleConfig getLastUsedSampleConfig() {
+		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
+		return SampleConfigManager.get(lastUsedProjectName);
+	}
+	
 	protected SampleConfig getSampleConfig(ExecutionEvent event) {
 		boolean selectionRequested = Boolean.parseBoolean(event.getParameter("org.globaltester.testrunner.ui.SelectSampleConfigParameter")); 
-		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
-		if (!selectionRequested && lastUsedProjectName != null && !lastUsedProjectName.isEmpty()){
-			return SampleConfigManager.get(lastUsedProjectName);
+		SampleConfig lastUsed = getLastUsedSampleConfig();
+		if (!selectionRequested && lastUsed != null){
+			return lastUsed;
 		}
 		return getSampleConfigFromDialog();
 	}
@@ -140,4 +154,9 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}
 		return null;
 	};
+	
+	public List<IResource> getResources(){
+		return resources;
+		
+	}
 }

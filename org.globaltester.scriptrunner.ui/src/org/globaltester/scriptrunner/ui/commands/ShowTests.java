@@ -1,7 +1,6 @@
 package org.globaltester.scriptrunner.ui.commands;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -12,7 +11,7 @@ import org.osgi.framework.Bundle;
 public class ShowTests {
 
 
-	public void show(LinkedList<IResource> resources) {
+	public void show(List<IResource> resources) {
 		TestResourceExecutorUi [] exec = getExecutorUis();
 		for (TestResourceExecutorUi current : exec){
 			if (current.canShow(resources)){
