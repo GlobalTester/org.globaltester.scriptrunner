@@ -12,7 +12,7 @@ public class RunTests {
 	
 	SampleConfig config;
 	
-	public void setConfigForNextExecution(SampleConfig config){
+	public RunTests(SampleConfig config){
 		this.config = config;
 	}
 	

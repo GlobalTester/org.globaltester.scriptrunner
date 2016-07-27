@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
@@ -18,6 +19,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.globaltester.base.ui.GtUiHelper;
+import org.globaltester.sampleconfiguration.SampleConfig;
+import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
 import org.globaltester.scriptrunner.RunTests;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
@@ -88,16 +91,28 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			e.printStackTrace();
 		}		
 		
-		
 		try{
 			new ShowTests().show(resources);
-			new RunTests().execute(resources);
+			SampleConfig config = getSampleConfig();
+			if (config == null){
+				return null;
+			}
+			
+			new RunTests(config).execute(resources);
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
 			return null;
 		}
 		GtUiHelper.openErrorDialog(shell, "Running failed, no applicable executors found for this selection");
 		return null;
+	}
+
+	protected SampleConfig getSampleConfig() {
+		SampleConfigSelectorDialog dialog = new SampleConfigSelectorDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell());
+		if (dialog.open() != Window.OK){
+			return null;
+		}
+		return dialog.getSelectedSampleConfig();
 	}
 
 	protected IFile getFileFromEditor(IWorkbenchPart activePart){
