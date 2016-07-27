@@ -66,30 +66,6 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");
 			return null;
 		}
-
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-		// show result view in GT perspective
-		try {
-			page.showView("org.globaltester.testmanager.views.ResultView");
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-
-		// show problem view in GT perspective
-		try {
-			page.showView("org.eclipse.ui.views.ProblemView");
-		} catch (PartInitException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		// show console view in GT perspective
-		try {
-			page.showView("org.eclipse.ui.console.ConsoleView");
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}		
 		
 		try{
 			new ShowTests().show(resources);
@@ -99,14 +75,37 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			}
 			
 			new RunTests(config).execute(resources);
+			return null;
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
 			return null;
 		}
-		GtUiHelper.openErrorDialog(shell, "Running failed, no applicable executors found for this selection");
-		return null;
 	}
 
+	protected void modifyWorkbench() {
+
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+		try {
+			page.showView("org.globaltester.testmanager.views.ResultView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			page.showView("org.eclipse.ui.views.ProblemView");
+		} catch (PartInitException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			page.showView("org.eclipse.ui.console.ConsoleView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}	
+	}
+	
 	protected SampleConfig getSampleConfig() {
 		SampleConfigSelectorDialog dialog = new SampleConfigSelectorDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell());
 		if (dialog.open() != Window.OK){
