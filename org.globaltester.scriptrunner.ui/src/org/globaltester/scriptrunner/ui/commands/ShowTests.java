@@ -8,6 +8,13 @@ import org.eclipse.core.runtime.Platform;
 import org.globaltester.scriptrunner.ui.TestResourceExecutorUi;
 import org.osgi.framework.Bundle;
 
+/**
+ * Command implementation that shows Test resources using one of the available
+ * {@link TestResourceExecutorUi} implementations
+ * 
+ * @author mboonk
+ *
+ */
 public class ShowTests {
 
 
