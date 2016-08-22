@@ -16,11 +16,11 @@ public class RunTests {
 		this.config = config;
 	}
 	
-	public void execute(List<IResource> resources){
+	public void execute(List<IResource> resources, TestExecutionCallback callback){
 		TestResourceExecutor [] exec = getExecutors();
 		for (TestResourceExecutor current : exec){
 			if (current.canExecute(resources)){
-				current.execute(config, resources);
+				current.execute(config, resources, callback);
 				return;
 			}
 		}

@@ -26,6 +26,7 @@ import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
 import org.globaltester.scriptrunner.Activator;
 import org.globaltester.scriptrunner.RunTests;
+import org.globaltester.scriptrunner.TestExecutionCallback;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
 	private List<IResource> resources;
@@ -73,7 +74,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			
 			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
 			
-			new RunTests(config).execute(resources);
+			new RunTests(config).execute(resources, TestExecutionCallback.NULL_CALLBACK);
 			return null;
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());

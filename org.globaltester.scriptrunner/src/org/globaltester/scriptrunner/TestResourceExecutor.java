@@ -14,5 +14,5 @@ import org.globaltester.sampleconfiguration.SampleConfig;
  */
 public interface TestResourceExecutor {
 	public boolean canExecute(List<IResource> resources);
-	public Object execute(SampleConfig config, List<IResource> resources);
+	public Object execute(SampleConfig config, List<IResource> resources, TestExecutionCallback callback);
 }
