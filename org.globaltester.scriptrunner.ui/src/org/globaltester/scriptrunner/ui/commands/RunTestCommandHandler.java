@@ -1,8 +1,5 @@
 package org.globaltester.scriptrunner.ui.commands;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +10,27 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
+import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.ui.GtUiHelper;
-import org.globaltester.scriptrunner.TestResourceExecutor;
-import org.osgi.framework.Bundle;
+import org.globaltester.sampleconfiguration.SampleConfig;
+import org.globaltester.sampleconfiguration.SampleConfigManager;
+import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
+import org.globaltester.scriptrunner.Activator;
+import org.globaltester.scriptrunner.RunTests;
+import org.globaltester.scriptrunner.TestExecutionCallback;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
+	private List<IResource> resources;
+	
 	/**
 	 * sets up environment, e.g. prepares settings for debugging threads and
 	 * launches and starts them, dependent on what is currently activated and
@@ -49,6 +53,36 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			return null;
 		}
 		
+		resources = createResourceList();
+		
+		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+		
+		if (resources.size() == 0){
+			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");
+			return null;
+		}
+		
+		try{
+			new ShowTests().show(resources);
+			
+			SampleConfig config = getSampleConfig(event);
+			
+			if (config == null){
+				GtUiHelper.openErrorDialog(shell, "Running failed: No sample config could be determined");
+				return null;
+			}
+			
+			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
+			
+			new RunTests(config).execute(resources, TestExecutionCallback.NULL_CALLBACK);
+			return null;
+		} catch (RuntimeException e) {
+			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	private List<IResource> createResourceList(){
 		ISelection iSel = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getSelectionService()
 				.getSelection();
@@ -62,67 +96,53 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 				resources.add(file);
 			}
 		}
-		
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		
-		if (resources.size() == 0){
-			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");
-			return null;
+		return resources;
+	}
+
+	protected void modifyWorkbench() {
+
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+		try {
+			page.showView("org.globaltester.testmanager.views.ResultView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
 		}
 		
-		TestResourceExecutor [] exec = getExecutors();
-		
-		try{
-			//clean the result view
-			IViewPart resultView = null;
-			IViewReference viewReferences[] = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage().getViewReferences();
-			for (int i = 0; i < viewReferences.length; i++) {
-				if ("org.globaltester.testmanager.views.ResultView".equals(viewReferences[i].getId())) {
-					resultView = viewReferences[i].getView(false);
-				}
-			}
-			if(resultView != null) {
-				try {
-					Bundle testmanagerBundle = Platform.getBundle("org.globaltester.testmanager");
-					Class<?> resultViewClass = testmanagerBundle.loadClass("org.globaltester.testmanager.views.ResultView");
-					Method reset = resultViewClass.getDeclaredMethod("reset");
-					reset.invoke(resultView);
-				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-			//execute test(s)
-			for (TestResourceExecutor current : exec){
-				if (current.canExecute(resources)){
-					return current.execute(resources, event.getParameters());
-				}
-			}
-		} catch (RuntimeException e) {
-			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
-			return null;
+		try {
+			page.showView("org.eclipse.ui.views.ProblemView");
+		} catch (PartInitException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		GtUiHelper.openErrorDialog(shell, "Running failed, no applicable executors found for this selection");
-		return null;
+
+		try {
+			page.showView("org.eclipse.ui.console.ConsoleView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}	
 	}
 	
-	protected TestResourceExecutor [] getExecutors(){
-		Bundle testmanagerBundle = Platform.getBundle("org.globaltester.testmanager.ui");
-		Bundle testrunnerBundle = Platform.getBundle("org.globaltester.testrunner.ui");
-
-		List<TestResourceExecutor> executors = new ArrayList<>();
-		
-		try {
-			executors.add((TestResourceExecutor) testmanagerBundle.loadClass("org.globaltester.testmanager.ui.TestManagerExecutor").newInstance());
-		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			// Do nothing, this solution is to be replaced by using a service based approach
+	protected SampleConfig getSampleConfigFromDialog(){
+		SampleConfigSelectorDialog dialog = new SampleConfigSelectorDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell());
+		if (dialog.open() != Window.OK){
+			return null;
 		}
-		try {
-			executors.add((TestResourceExecutor) testrunnerBundle.loadClass("org.globaltester.testrunner.ui.TestRunnerExecutor").newInstance());
-		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			// Do nothing, this solution is to be replaced by using a service based approach
+		return dialog.getSelectedSampleConfig();		
+	}
+	
+	protected SampleConfig getLastUsedSampleConfig() {
+		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
+		return SampleConfigManager.get(lastUsedProjectName);
+	}
+	
+	protected SampleConfig getSampleConfig(ExecutionEvent event) {
+		boolean selectionRequested = Boolean.parseBoolean(event.getParameter("org.globaltester.testrunner.ui.SelectSampleConfigParameter")); 
+		SampleConfig lastUsed = getLastUsedSampleConfig();
+		if (!selectionRequested && lastUsed != null){
+			return lastUsed;
 		}
-		return executors.toArray(new TestResourceExecutor [executors.size()]);
+		return getSampleConfigFromDialog();
 	}
 
 	protected IFile getFileFromEditor(IWorkbenchPart activePart){
@@ -135,4 +155,9 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}
 		return null;
 	};
+	
+	public List<IResource> getResources(){
+		return resources;
+		
+	}
 }

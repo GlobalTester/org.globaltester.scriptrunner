@@ -4,10 +4,12 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
-
+	
+	public static String PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT = "org.globaltester.scriptrunner.lastUsedSampleConfig";
+	
 	private static BundleContext context;
-
-	static BundleContext getContext() {
+	
+	public static BundleContext getContext() {
 		return context;
 	}
 	
