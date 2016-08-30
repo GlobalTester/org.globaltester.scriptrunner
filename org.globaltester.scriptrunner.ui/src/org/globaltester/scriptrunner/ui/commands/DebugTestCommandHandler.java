@@ -162,7 +162,8 @@ public class DebugTestCommandHandler extends RunTestCommandHandler {
 			launchMan.initDebugLaunchConfiguration();
 			// after init... the port number can be fetched from launch manager and set for debugger
 			// as socket number for the communication between the two debugger threads.
-			// TODO if we move the thread start to smartcardshell this would probably be obsolete!
+			
+			// if we move the thread start to smartcardshell this would probably be obsolete!
 			envSettings.put(RhinoJavaScriptAccess.RHINO_JS_PORT_HASH_KEY, launchMan.getPortNum());
 
 //			Test1: Write converted JS code to file without calling the Rhino evaluator:

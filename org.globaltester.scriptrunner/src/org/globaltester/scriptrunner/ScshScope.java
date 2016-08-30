@@ -259,19 +259,16 @@ public class ScshScope extends ImporterTopLevel implements GPRuntime {
 	
 	@Override
 	public byte[] getSystemID() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PrintStream getTracePrintStream() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public GPTracer getTracer() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
