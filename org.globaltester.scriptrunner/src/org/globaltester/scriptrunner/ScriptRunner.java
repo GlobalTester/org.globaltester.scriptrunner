@@ -189,8 +189,6 @@ public class ScriptRunner implements FileEvaluator {
 
 		if (result != Context.getUndefinedValue()) {
 			scope.put("lastresult", scope, result);
-			// FIXME Is this really needed? Remove if possible
-			Context.toString(result);
 		}
 		return result;
 	}
