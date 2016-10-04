@@ -10,23 +10,17 @@ package org.globaltester.scriptrunner;
 public interface TestExecutionCallback {
 
 	public static class TestResult {
-		
-		/**
-		 * Creates a new Testersult
-		 *  
-		 * @param nrOfElements number of elements executed
-		 * @param result {@see Result#Status}
-		 */
-		public TestResult(int nrOfElements, int result) {
-			this.testCases = nrOfElements;
-			this.overallResult = result;
-		}
-		
 		public int testCases = 0;
 		public int overallResult = 0;
-
+		public SubTestResult [] subResults;
 	}
 
+	public static class SubTestResult {
+		public String testCaseId;
+		public String logFileName;
+		public String resultString;
+	}
+	
 	TestExecutionCallback NULL_CALLBACK = new TestExecutionCallback () {
 		@Override
 		public void testExecutionFinished(TestResult result) {
