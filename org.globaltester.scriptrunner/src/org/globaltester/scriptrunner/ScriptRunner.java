@@ -1,17 +1,3 @@
-/*
- * Project GlobalTester File ScriptRunner.java
- * 
- * Date 16.09.2005
- * 
- * 
- * Developed by HJP Consulting GmbH Lanfert 24 33106 Paderborn Germany
- * 
- * 
- * This software is the confidential and proprietary information of HJP
- * ("Confidential Information"). You shall not disclose such Confidential
- * Information and shall use it only in accordance with the terms of the
- * Non-Disclosure Agreement you entered into with HJP.
- */
 package org.globaltester.scriptrunner;
 
 import java.io.File;
