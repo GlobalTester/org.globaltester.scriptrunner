@@ -36,7 +36,7 @@ public interface TestExecutionCallback {
 	}
 	
 	public static class UserQuestionEventResult extends EventResult {
-		public String result;
+		public int result;
 	}
 	
 	TestExecutionCallback NULL_CALLBACK = new TestExecutionCallback () {
