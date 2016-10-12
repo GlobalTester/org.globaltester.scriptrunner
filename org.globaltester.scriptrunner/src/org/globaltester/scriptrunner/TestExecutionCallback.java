@@ -43,14 +43,12 @@ public interface TestExecutionCallback {
 
 		@Override
 		public void testExecutionFinished(TestResult result) {
-			// TODO Auto-generated method stub
-			
+			// ignore intentionally
 		}
 
 		@Override
 		public EventResult submitEvent(Event event) {
-			// TODO Auto-generated method stub
-			return null;
+			return new EventResult();
 		}
 
 	};
