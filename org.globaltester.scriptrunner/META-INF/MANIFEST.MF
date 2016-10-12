@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.globaltester.smartcardshell,
  org.globaltester.logging.legacy,
  org.mozilla.javascript,
- org.globaltester.sampleconfiguration
+ org.globaltester.sampleconfiguration,
+ org.globaltester.base
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.globaltester.scriptrunner

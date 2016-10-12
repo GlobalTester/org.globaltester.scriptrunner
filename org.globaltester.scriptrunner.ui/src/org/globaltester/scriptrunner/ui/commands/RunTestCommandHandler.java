@@ -26,6 +26,8 @@ import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
 import org.globaltester.scriptrunner.Activator;
 import org.globaltester.scriptrunner.RunTests;
+import org.globaltester.scriptrunner.RuntimeRequirementsProvider;
+import org.globaltester.scriptrunner.SampleConfigProviderImpl;
 import org.globaltester.scriptrunner.TestExecutionCallback;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
@@ -74,7 +76,8 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			
 			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
 			
-			new RunTests(config).execute(resources, TestExecutionCallback.NULL_CALLBACK);
+			
+			new RunTests(getRuntimeRequirementsProvider(config)).execute(resources, TestExecutionCallback.NULL_CALLBACK);
 			return null;
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
@@ -82,6 +85,10 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}
 	}
 	
+	private RuntimeRequirementsProvider getRuntimeRequirementsProvider(SampleConfig config) {
+		return new SampleConfigProviderImpl(config);
+	}
+
 	private List<IResource> createResourceList(){
 		ISelection iSel = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getSelectionService()

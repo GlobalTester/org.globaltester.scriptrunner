@@ -21,11 +21,38 @@ public interface TestExecutionCallback {
 		public String resultString;
 	}
 	
+	public static class Event{
+	}
+	
+	public static class EventResult{
+	}
+	
+	public static class UserNotificationEvent extends Event {
+		public String message;
+	}
+	
+	public static class UserQuestionEvent extends UserNotificationEvent {
+		public String [] possibleResults;
+	}
+	
+	public static class UserQuestionEventResult extends EventResult {
+		public String result;
+	}
+	
 	TestExecutionCallback NULL_CALLBACK = new TestExecutionCallback () {
+
 		@Override
 		public void testExecutionFinished(TestResult result) {
-			// intentionally ignore
+			// TODO Auto-generated method stub
+			
 		}
+
+		@Override
+		public EventResult submitEvent(Event event) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	};
 
 	/**
@@ -35,5 +62,7 @@ public interface TestExecutionCallback {
 	 * @param result
 	 */
 	public void testExecutionFinished(TestResult result); // XXX return org.globaltester.testrunner.testframework.Result or something similar as parameter
+
+	public EventResult submitEvent(Event event);
 
 }

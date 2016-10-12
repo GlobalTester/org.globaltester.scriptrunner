@@ -3,7 +3,6 @@ package org.globaltester.scriptrunner;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
-import org.globaltester.sampleconfiguration.SampleConfig;
 
 /**
  * Implementations of this interface are used for execution of workspace
@@ -14,5 +13,5 @@ import org.globaltester.sampleconfiguration.SampleConfig;
  */
 public interface TestResourceExecutor {
 	public boolean canExecute(List<IResource> resources);
-	public Object execute(SampleConfig config, List<IResource> resources, TestExecutionCallback callback);
+	public Object execute(RuntimeRequirementsProvider requirementsProvider, List<IResource> resources, TestExecutionCallback callback);
 }
