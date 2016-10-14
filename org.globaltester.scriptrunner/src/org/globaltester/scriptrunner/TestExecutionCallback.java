@@ -61,6 +61,12 @@ public interface TestExecutionCallback {
 	 */
 	public void testExecutionFinished(TestResult result); // XXX return org.globaltester.testrunner.testframework.Result or something similar as parameter
 
+	/**
+	 * Submit an event to be processed by this callback.
+	 * 
+	 * @param event
+	 * @return
+	 */
 	public EventResult submitEvent(Event event);
 
 }
