@@ -5,22 +5,21 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
-import org.globaltester.sampleconfiguration.SampleConfig;
 import org.osgi.framework.Bundle;
 
 public class RunTests {
 	
-	SampleConfig config;
+	RuntimeRequirementsProvider requirementsProvider;
 	
-	public RunTests(SampleConfig config){
-		this.config = config;
+	public RunTests(RuntimeRequirementsProvider requirementsProvider){
+		this.requirementsProvider = requirementsProvider;
 	}
 	
 	public void execute(List<IResource> resources, TestExecutionCallback callback){
 		TestResourceExecutor [] exec = getExecutors();
 		for (TestResourceExecutor current : exec){
 			if (current.canExecute(resources)){
-				current.execute(config, resources, callback);
+				current.execute(requirementsProvider, resources, callback);
 				return;
 			}
 		}

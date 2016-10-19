@@ -10,28 +10,47 @@ package org.globaltester.scriptrunner;
 public interface TestExecutionCallback {
 
 	public static class TestResult {
-		
-		/**
-		 * Creates a new Testersult
-		 *  
-		 * @param nrOfElements number of elements executed
-		 * @param result {@see Result#Status}
-		 */
-		public TestResult(int nrOfElements, int result) {
-			this.testCases = nrOfElements;
-			this.overallResult = result;
-		}
-		
 		public int testCases = 0;
 		public int overallResult = 0;
-
+		public SubTestResult [] subResults;
 	}
 
+	public static class SubTestResult {
+		public String testCaseId;
+		public String logFileName;
+		public String resultString;
+	}
+	
+	public static class Event{
+	}
+	
+	public static class EventResult{
+	}
+	
+	public static class UserNotificationEvent extends Event {
+		public String message;
+	}
+	
+	public static class UserQuestionEvent extends UserNotificationEvent {
+		public String [] possibleResults;
+	}
+	
+	public static class UserQuestionEventResult extends EventResult {
+		public int result;
+	}
+	
 	TestExecutionCallback NULL_CALLBACK = new TestExecutionCallback () {
+
 		@Override
 		public void testExecutionFinished(TestResult result) {
-			// intentionally ignore
+			// ignore intentionally
 		}
+
+		@Override
+		public EventResult submitEvent(Event event) {
+			return new EventResult();
+		}
+
 	};
 
 	/**
@@ -41,5 +60,13 @@ public interface TestExecutionCallback {
 	 * @param result
 	 */
 	public void testExecutionFinished(TestResult result); // XXX return org.globaltester.testrunner.testframework.Result or something similar as parameter
+
+	/**
+	 * Submit an event to be processed by this callback.
+	 * 
+	 * @param event
+	 * @return
+	 */
+	public EventResult submitEvent(Event event);
 
 }
