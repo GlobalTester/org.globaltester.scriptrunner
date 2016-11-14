@@ -1,7 +1,11 @@
 package org.globaltester.scriptrunner;
 
+import java.util.List;
+
+import org.globaltester.base.PropertyElement;
+
 /**
- * Callback interface used by TestExceutors to interact with the calling
+ * Callback interface used by TestExecutors to interact with the calling
  * instance.
  * 
  * @author amay
@@ -33,6 +37,7 @@ public interface TestExecutionCallback {
 	
 	public static class UserQuestionEvent extends UserNotificationEvent {
 		public String [] possibleResults;
+		public List<PropertyElement> properties;
 	}
 	
 	public static class UserQuestionEventResult extends EventResult {
