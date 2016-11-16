@@ -16,9 +16,7 @@ import org.globaltester.smartcardshell.jsinterface.RhinoJavaScriptAccess;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.WrapFactory;
 
 /**
  * This class implements the methods of an internal shell.
@@ -44,6 +42,10 @@ public class ScriptRunner implements FileEvaluator {
 	private IContainer scriptRootDir;
 
 	private Map<Class<?>, Object> configurationObjects;
+	public Map<Class<?>, Object> getConfigurationObjects() {
+		return configurationObjects;
+	}
+
 	private List<Runnable> cleanupHooks = new LinkedList<>();
 
 	private ScriptableObject scope;
@@ -83,24 +85,26 @@ public class ScriptRunner implements FileEvaluator {
 
 			addClassLoader(this.getClass().getClassLoader());
 
-			WrapFactory wf = new GTWrapFactory();
-			context.setWrapFactory(wf);
 			context.initStandardObjects(scope);
-
+			
 			String[] names = { "print", "load", "defineClass", "getAbsolutePathForProject", "eval",
-					"getRunnerInstance" };
+			"getRunnerInstance" };
 
 			scope.defineFunctionProperties(names, scope.getClass(), ScriptableObject.DONTENUM);
 
-			injectConfiguration();
+			context.initStandardObjects(scope);
+
+			injectConfiguration(scope, configurationObjects);
+			
 		} catch (Exception e) {
 			TestLogger.error(makeExceptionMessage(e));
 		}
 	}
 
-	private void injectConfiguration() {
-		for (Class<?> key : configurationObjects.keySet()) {
-			Object wrappedSampleConfig = Context.javaToJS(configurationObjects.get(key), scope);
+
+	private static void injectConfiguration(ScriptableObject scope, Map<Class<?>, Object> map) {
+		for (Class<?> key : map.keySet()) {
+			Object wrappedSampleConfig = Context.javaToJS(map.get(key), scope);
 			ScriptableObject.putProperty(scope, "_" + key.getCanonicalName().replace('.', '_'), wrappedSampleConfig);
 		}
 	}
@@ -279,7 +283,7 @@ public class ScriptRunner implements FileEvaluator {
 		return this.context;
 	}
 
-	public Scriptable getScope() {
+	public ScriptableObject getScope() {
 		return scope;
 	};
 
