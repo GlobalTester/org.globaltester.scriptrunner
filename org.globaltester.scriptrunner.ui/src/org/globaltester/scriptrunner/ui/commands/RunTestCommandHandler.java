@@ -29,6 +29,8 @@ import org.globaltester.scriptrunner.RunTests;
 import org.globaltester.scriptrunner.RuntimeRequirementsProvider;
 import org.globaltester.scriptrunner.SampleConfigProviderImpl;
 import org.globaltester.scriptrunner.TestExecutionCallback;
+import org.globaltester.scriptrunner.ui.SampleConfigDialogCanceledException;
+import org.globaltester.scriptrunner.ui.SampleConfigSelectionException;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
 	private List<IResource> resources;
@@ -82,6 +84,11 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
 			return null;
+		} catch (SampleConfigSelectionException e) {
+			if (!(e instanceof SampleConfigDialogCanceledException)){
+				GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());
+			}
+			return null;
 		}
 	}
 	
@@ -130,12 +137,15 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}	
 	}
 	
-	protected SampleConfig getSampleConfigFromDialog(){
+	protected SampleConfig getSampleConfigFromDialog() throws SampleConfigSelectionException{
 		SampleConfigSelectorDialog dialog = new SampleConfigSelectorDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell());
-		if (dialog.open() != Window.OK){
-			return null;
+		int result = dialog.open(); 
+		if (result == Window.OK){
+			return dialog.getSelectedSampleConfig();
+		} else if (result == Window.CANCEL){
+			throw new SampleConfigDialogCanceledException();
 		}
-		return dialog.getSelectedSampleConfig();		
+		throw new SampleConfigSelectionException();
 	}
 	
 	protected SampleConfig getLastUsedSampleConfig() {
@@ -143,7 +153,13 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		return SampleConfigManager.get(lastUsedProjectName);
 	}
 	
-	protected SampleConfig getSampleConfig(ExecutionEvent event) {
+	/**
+	 * This method tries to get a sample config for execution of the test cases. 
+	 * @param event
+	 * @return a {@link SampleConfig} object to be used
+	 * @throws SampleConfigSelectionException when no {@link SampleConfig} could be determined.
+	 */
+	protected SampleConfig getSampleConfig(ExecutionEvent event) throws SampleConfigSelectionException{
 		boolean selectionRequested = Boolean.parseBoolean(event.getParameter("org.globaltester.testrunner.ui.SelectSampleConfigParameter")); 
 		SampleConfig lastUsed = getLastUsedSampleConfig();
 		if (!selectionRequested && lastUsed != null){
