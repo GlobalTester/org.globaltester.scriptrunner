@@ -79,7 +79,9 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
 			
 			
-			new RunTests(getRuntimeRequirementsProvider(config)).execute(resources, TestExecutionCallback.NULL_CALLBACK);
+			if (!new RunTests(getRuntimeRequirementsProvider(config)).execute(resources, TestExecutionCallback.NULL_CALLBACK)){
+				GtUiHelper.openErrorDialog(shell, "Running failed: No valid execution engine found for your selection.");
+			}
 			return null;
 		} catch (RuntimeException e) {
 			GtUiHelper.openErrorDialog(shell, "Running failed: " + e.getMessage());

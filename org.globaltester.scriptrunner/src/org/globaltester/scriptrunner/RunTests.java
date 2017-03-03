@@ -15,14 +15,21 @@ public class RunTests {
 		this.requirementsProvider = requirementsProvider;
 	}
 	
-	public void execute(List<IResource> resources, TestExecutionCallback callback){
+	/**
+	 * @param resources
+	 * @param callback
+	 * @return true, iff an executor has been found and execution has been
+	 *         started
+	 */
+	public boolean execute(List<IResource> resources, TestExecutionCallback callback){
 		TestResourceExecutor [] exec = getExecutors();
 		for (TestResourceExecutor current : exec){
 			if (current.canExecute(resources)){
 				current.execute(requirementsProvider, resources, callback);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public TestResourceExecutor [] getExecutors(){
