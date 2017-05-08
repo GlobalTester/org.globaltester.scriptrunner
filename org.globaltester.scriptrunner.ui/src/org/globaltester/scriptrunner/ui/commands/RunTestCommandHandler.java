@@ -29,6 +29,7 @@ import org.globaltester.scriptrunner.RunTests;
 import org.globaltester.scriptrunner.RuntimeRequirementsProvider;
 import org.globaltester.scriptrunner.SampleConfigProviderImpl;
 import org.globaltester.scriptrunner.TestExecutionCallback;
+import org.globaltester.scriptrunner.TestResourceExecutor;
 import org.globaltester.scriptrunner.ui.SampleConfigDialogCanceledException;
 import org.globaltester.scriptrunner.ui.SampleConfigSelectionException;
 
@@ -52,14 +53,18 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+		if (TestResourceExecutor.lock.isLocked()){
+			GtUiHelper.openErrorDialog(shell, "Already a TestExecution running. Please wait until that other execution has finished.");
+			return null;
+		}
+		
 		// check for dirty files and save them
 		if (!PlatformUI.getWorkbench().saveAllEditors(true)) {
 			return null;
 		}
 		
 		resources = createResourceList();
-		
-		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 		
 		if (resources.size() == 0){
 			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");

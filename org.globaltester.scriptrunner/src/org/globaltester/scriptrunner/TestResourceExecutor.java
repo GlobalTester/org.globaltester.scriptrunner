@@ -1,6 +1,7 @@
 package org.globaltester.scriptrunner;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.resources.IResource;
 
@@ -13,6 +14,12 @@ import org.eclipse.core.resources.IResource;
  */
 public interface TestResourceExecutor {
 	
+	/**
+	 * Ensure that only one TestResourceExecution is running at any given time.
+	 * This is required for the moment but should be removed in the future as soon as parallel execution is supported
+	 */
+	public static ReentrantLock lock = new ReentrantLock();
+
 	/**
 	 * @param resources
 	 *            the resources to be checked
