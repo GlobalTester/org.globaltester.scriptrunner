@@ -29,7 +29,7 @@ import org.globaltester.scriptrunner.RunTests;
 import org.globaltester.scriptrunner.RuntimeRequirementsProvider;
 import org.globaltester.scriptrunner.SampleConfigProviderImpl;
 import org.globaltester.scriptrunner.TestExecutionCallback;
-import org.globaltester.scriptrunner.TestResourceExecutor;
+import org.globaltester.scriptrunner.TestResourceExecutorLock;
 import org.globaltester.scriptrunner.ui.SampleConfigDialogCanceledException;
 import org.globaltester.scriptrunner.ui.SampleConfigSelectionException;
 
@@ -54,7 +54,9 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-		if (TestResourceExecutor.lock.isLocked()){
+		if (TestResourceExecutorLock.lock.tryLock()){
+			TestResourceExecutorLock.lock.unlock();
+		} else {
 			GtUiHelper.openErrorDialog(shell, "Already a TestExecution running. Please wait until that other execution has finished.");
 			return null;
 		}

@@ -1,25 +1,21 @@
 package org.globaltester.scriptrunner;
 
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.resources.IResource;
 
 /**
  * Implementations of this interface are used for execution of workspace
  * resources as test cases.
+ * <p/>
+ * Parallel execution is not supported at the moment. Thus every implementing
+ * class should respect the locking imposed by {@link TestResourceExecutorLock}
  * 
  * @author mboonk
  *
  */
 public interface TestResourceExecutor {
 	
-	/**
-	 * Ensure that only one TestResourceExecution is running at any given time.
-	 * This is required for the moment but should be removed in the future as soon as parallel execution is supported
-	 */
-	public static ReentrantLock lock = new ReentrantLock();
-
 	/**
 	 * @param resources
 	 *            the resources to be checked
