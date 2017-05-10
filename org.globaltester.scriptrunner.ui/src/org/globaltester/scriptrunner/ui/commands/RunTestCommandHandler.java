@@ -54,8 +54,8 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-		if (TestResourceExecutorLock.lock.tryLock()){
-			TestResourceExecutorLock.lock.unlock();
+		if (TestResourceExecutorLock.getLock().tryLock()){
+			TestResourceExecutorLock.getLock().unlock();
 		} else {
 			GtUiHelper.openErrorDialog(shell, "Already a TestExecution running. Please wait until that other execution has finished.");
 			return null;
