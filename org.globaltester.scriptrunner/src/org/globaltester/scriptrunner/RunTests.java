@@ -9,10 +9,10 @@ import org.osgi.framework.Bundle;
 
 public class RunTests {
 	
-	RuntimeRequirementsProvider requirementsProvider;
+	GtRuntimeRequirements runtimReqs;
 	
-	public RunTests(RuntimeRequirementsProvider requirementsProvider){
-		this.requirementsProvider = requirementsProvider;
+	public RunTests(GtRuntimeRequirements runtimeReqs){
+		this.runtimReqs = runtimeReqs;
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class RunTests {
 		TestResourceExecutor [] exec = getExecutors();
 		for (TestResourceExecutor current : exec){
 			if (current.canExecute(resources)){
-				current.execute(requirementsProvider, resources, callback);
+				current.execute(runtimReqs, resources, callback);
 				return true;
 			}
 		}

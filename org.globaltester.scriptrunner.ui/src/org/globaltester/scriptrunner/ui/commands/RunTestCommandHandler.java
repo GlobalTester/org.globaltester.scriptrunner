@@ -21,13 +21,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.ui.GtUiHelper;
+import org.globaltester.base.ui.UserInteractionImpl;
 import org.globaltester.sampleconfiguration.SampleConfig;
 import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
 import org.globaltester.scriptrunner.Activator;
+import org.globaltester.scriptrunner.GtRuntimeRequirements;
 import org.globaltester.scriptrunner.RunTests;
-import org.globaltester.scriptrunner.RuntimeRequirementsProvider;
-import org.globaltester.scriptrunner.SampleConfigProviderImpl;
 import org.globaltester.scriptrunner.TestExecutionCallback;
 import org.globaltester.scriptrunner.TestResourceExecutorLock;
 import org.globaltester.scriptrunner.ui.SampleConfigDialogCanceledException;
@@ -85,8 +85,9 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			
 			PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT, config.getName());
 			
+			GtRuntimeRequirements runtimeReqs = new GtRuntimeRequirements(new UserInteractionImpl(), config);
 			
-			if (!new RunTests(getRuntimeRequirementsProvider(config)).execute(resources, TestExecutionCallback.NULL_CALLBACK)){
+			if (!new RunTests(runtimeReqs).execute(resources, TestExecutionCallback.NULL_CALLBACK)){
 				GtUiHelper.openErrorDialog(shell, "Running failed: No valid execution engine found for your selection.");
 			}
 			return null;
@@ -99,10 +100,6 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 			}
 			return null;
 		}
-	}
-	
-	private RuntimeRequirementsProvider getRuntimeRequirementsProvider(SampleConfig config) {
-		return new SampleConfigProviderImpl(config);
 	}
 
 	private List<IResource> createResourceList(){

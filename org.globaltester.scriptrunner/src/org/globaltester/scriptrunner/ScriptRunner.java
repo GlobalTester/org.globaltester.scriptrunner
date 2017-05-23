@@ -41,9 +41,9 @@ public class ScriptRunner implements FileEvaluator {
 	private File currentWorkingDir; // Current working directory
 	private IContainer scriptRootDir;
 
-	private Map<Class<?>, Object> configurationObjects;
-	public Map<Class<?>, Object> getConfigurationObjects() {
-		return configurationObjects;
+	private GtRuntimeRequirements runtimeRequirements;
+	public GtRuntimeRequirements getConfigurationObjects() {
+		return runtimeRequirements;
 	}
 
 	private List<Runnable> cleanupHooks = new LinkedList<>();
@@ -56,10 +56,10 @@ public class ScriptRunner implements FileEvaluator {
 	 * @param scriptPath
 	 *            path where the scripts could be found
 	 */
-	public ScriptRunner(IContainer scriptRoot, String scriptPath, Map<Class<?>, Object> configurationObjects) {
+	public ScriptRunner(IContainer scriptRoot, String scriptPath, GtRuntimeRequirements runtimeReqs) {
 		currentWorkingDir = new File(scriptPath);
 		scriptRootDir = scriptRoot;
-		this.configurationObjects = configurationObjects;
+		this.runtimeRequirements = runtimeReqs;
 	}
 
 	/**
@@ -94,18 +94,8 @@ public class ScriptRunner implements FileEvaluator {
 
 			context.initStandardObjects(scope);
 
-			injectConfiguration(scope, configurationObjects);
-			
 		} catch (Exception e) {
 			TestLogger.error(makeExceptionMessage(e));
-		}
-	}
-
-
-	private static void injectConfiguration(ScriptableObject scope, Map<Class<?>, Object> map) {
-		for (Class<?> key : map.keySet()) {
-			Object wrappedSampleConfig = Context.javaToJS(map.get(key), scope);
-			ScriptableObject.putProperty(scope, "_" + key.getCanonicalName().replace('.', '_'), wrappedSampleConfig);
 		}
 	}
 
@@ -300,8 +290,8 @@ public class ScriptRunner implements FileEvaluator {
 	 * @see java.util.Map#get(Object)
 	 */
 	public Object getConfigurationObject(Class<?> key) {
-		if (configurationObjects == null) return null;
-		return configurationObjects.get(key);
+		if (runtimeRequirements == null) return null;
+		return runtimeRequirements.get(key);
 	}
 
 	public IContainer getScriptRoot() {

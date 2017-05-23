@@ -26,7 +26,7 @@ public interface TestResourceExecutor {
 	/**
 	 * Execute the given resources.
 	 * 
-	 * @param requirementsProvider
+	 * @param runtimeReqs
 	 *            this provides the test environment
 	 * @param resources
 	 *            the resources to be executed
@@ -35,5 +35,5 @@ public interface TestResourceExecutor {
 	 *            method
 	 * @return
 	 */
-	public Object execute(RuntimeRequirementsProvider requirementsProvider, List<IResource> resources, TestExecutionCallback callback);
+	public Object execute(GtRuntimeRequirements runtimeReqs, List<IResource> resources, TestExecutionCallback callback);
 }
