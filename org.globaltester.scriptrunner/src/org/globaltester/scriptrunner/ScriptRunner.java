@@ -42,9 +42,6 @@ public class ScriptRunner implements FileEvaluator {
 	private IContainer scriptRootDir;
 
 	private GtRuntimeRequirements runtimeRequirements;
-	public GtRuntimeRequirements getConfigurationObjects() {
-		return runtimeRequirements;
-	}
 
 	private List<Runnable> cleanupHooks = new LinkedList<>();
 
@@ -72,7 +69,7 @@ public class ScriptRunner implements FileEvaluator {
 	}
 
 	/**
-	 * Initialisation of this shell. Create new Card object and set the
+	 * Initialization of this shell. Create new Card object and set the
 	 * environment.
 	 */
 	public void init(ScriptableObject scope) {
@@ -289,8 +286,10 @@ public class ScriptRunner implements FileEvaluator {
 	 * <p/>
 	 * @see java.util.Map#get(Object)
 	 */
-	public Object getConfigurationObject(Class<?> key) {
-		if (runtimeRequirements == null) return null;
+	public Object getRuntimeRequirement(Class<?> key) {
+		if (runtimeRequirements == null || !runtimeRequirements.containsKey(key)){
+			throw new AssertionError("No runtime requirements found for the key " + key + ".");
+		}
 		return runtimeRequirements.get(key);
 	}
 

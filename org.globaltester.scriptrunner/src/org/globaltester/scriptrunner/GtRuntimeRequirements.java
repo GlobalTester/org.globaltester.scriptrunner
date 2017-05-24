@@ -9,8 +9,7 @@ import org.globaltester.sampleconfiguration.SampleConfig;
 /**
  * {@link GtRuntimeRequirements} provide a container for all objects required by
  * testcases during execution. It is filled and propagated by the execution
- * engine before testexecution and available from within GT testcases through
- * FIXME
+ * engine before test execution and available from within GT testcases through 
  * 
  * @author amay
  *
