@@ -193,10 +193,17 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		
 	}
 
+	/**
+	 * @return true, iff the handler will ignore the dirty flag on the workbench
+	 */
 	public boolean isIgnoreDirty() {
 		return ignoreDirty;
 	}
 
+	/**
+	 * Sets the property for ignoring the dirty flag before execution.
+	 * @param ignoreDirty
+	 */
 	public void setIgnoreDirty(boolean ignoreDirty) {
 		this.ignoreDirty = ignoreDirty;
 	}
