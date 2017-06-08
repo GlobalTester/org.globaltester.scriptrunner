@@ -71,7 +71,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		
 		resources = createResourceList();
 		
-		if (resources.size() == 0){
+		if (resources.isEmpty()){
 			GtUiHelper.openErrorDialog(shell, "Select executable files or an editor for execution of test cases.");
 			return null;
 		}
@@ -112,7 +112,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		LinkedList<IResource> resources = GtUiHelper.getSelectedIResources(iSel, IResource.class);
 		
 		
-		if (resources.size() == 0){
+		if (resources.isEmpty()){
 			//try to get file from editor
 			IFile file = getFileFromEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
 			if (file != null){
