@@ -34,6 +34,8 @@ import org.globaltester.scriptrunner.ui.SampleConfigDialogCanceledException;
 import org.globaltester.scriptrunner.ui.SampleConfigSelectionException;
 
 public abstract class RunTestCommandHandler extends AbstractHandler {
+	private boolean ignoreDirty = false;
+	
 	private List<IResource> resources;
 	
 	/**
@@ -62,7 +64,8 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}
 		
 		// check for dirty files and save them
-		if (!PlatformUI.getWorkbench().saveAllEditors(true)) {
+		if ((!isIgnoreDirty()) && (!PlatformUI.getWorkbench().saveAllEditors(true))) {
+			setIgnoreDirty(false);
 			return null;
 		}
 		
@@ -189,4 +192,13 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		return resources;
 		
 	}
+
+	public boolean isIgnoreDirty() {
+		return ignoreDirty;
+	}
+
+	public void setIgnoreDirty(boolean ignoreDirty) {
+		this.ignoreDirty = ignoreDirty;
+	}
+	
 }
