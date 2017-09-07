@@ -15,4 +15,8 @@ public class EnvironmentNotInitializedException extends Exception {
 		super(message);
 	}
 
+	public EnvironmentNotInitializedException(String message, Exception e) {
+		super(message, e);
+	}
+
 }
