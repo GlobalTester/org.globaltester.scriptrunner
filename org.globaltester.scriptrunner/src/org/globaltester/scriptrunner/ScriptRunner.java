@@ -146,7 +146,7 @@ public class ScriptRunner implements FileEvaluator {
 			System.out.println("Command: " + command);
 			return null;
 		}
-
+		
 		Object result = context.evaluateString(scope, command, sourceName, lineNumber, null);
 
 		// If the evaluator returns a function object, then we call
