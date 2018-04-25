@@ -50,11 +50,11 @@ public class ScriptRunner implements FileEvaluator {
 	/**
 	 * Create ScriptRunner
 	 * 
-	 * @param scriptPath
-	 *            path where the scripts could be found
+	 * @param workingDir
+	 *            initial working dir
 	 */
-	public ScriptRunner(IContainer scriptRoot, String scriptPath, GtRuntimeRequirements runtimeReqs) {
-		currentWorkingDir = new File(scriptPath);
+	public ScriptRunner(IContainer scriptRoot, String workingDir, GtRuntimeRequirements runtimeReqs) {
+		currentWorkingDir = new File(workingDir);
 		scriptRootDir = scriptRoot;
 		this.runtimeRequirements = runtimeReqs;
 	}
@@ -255,11 +255,11 @@ public class ScriptRunner implements FileEvaluator {
 	}
 
 	public File getUserDir() {
-		return scriptRootDir.getLocation().toFile();
+		return getScriptRoot().getLocation().toFile();
 	}
 
 	public File getSystemDir() {
-		return scriptRootDir.getLocation().toFile();
+		return getScriptRoot().getLocation().toFile();
 	}
 
 	public void addCleanupHook(Runnable hook) {
