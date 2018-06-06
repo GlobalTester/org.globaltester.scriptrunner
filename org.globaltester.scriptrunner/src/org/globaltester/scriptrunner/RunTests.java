@@ -24,14 +24,14 @@ public class RunTests {
 	 */
 	public boolean execute(List<IResource> resources, TestExecutionCallback callback) {
 		try {
-			TestResourceExecutor[] exec = getExecutors();
-			for (TestResourceExecutor current : exec) {
+			TestExecutor[] exec = getExecutors();
+			for (TestExecutor current : exec) {
 				if (current.canExecute(resources)) {
 					current.execute(runtimReqs, resources, callback);
 					return true;
 				}
 			}
-		} catch (ExecutionRequirementsException e) {
+		} catch (ExecutionRequirementsException e) { //FIXME AAF remove this if possible after refactoring
 			UserNotificationEvent event = new UserNotificationEvent();
 			event.message = e.getUserMessage();
 			callback.submitEvent(event);
@@ -39,24 +39,25 @@ public class RunTests {
 		return false;
 	}
 
-	public TestResourceExecutor[] getExecutors() {
+	public TestExecutor[] getExecutors() {
+		//FIXME AAC move this to testrunner ui bundle
 		Bundle testmanagerBundle = Platform.getBundle("org.globaltester.testmanager.ui");
 		Bundle testrunnerBundle = Platform.getBundle("org.globaltester.testrunner.ui");
 
-		List<TestResourceExecutor> executors = new ArrayList<>();
+		List<TestExecutor> executors = new ArrayList<>();
 
 		try {
-			executors.add((TestResourceExecutor) testmanagerBundle
-					.loadClass("org.globaltester.testmanager.ui.TestManagerExecutor").newInstance());
+			executors.add((TestExecutor) testmanagerBundle
+					.loadClass("org.globaltester.testmanager.ui.TestSetExecutor").newInstance());
 		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			// Do nothing, this solution is to be replaced by using a service based approach
 		}
 		try {
-			executors.add((TestResourceExecutor) testrunnerBundle
-					.loadClass("org.globaltester.testrunner.ui.TestRunnerExecutor").newInstance());
+			executors.add((TestExecutor) testrunnerBundle
+					.loadClass("org.globaltester.testrunner.ui.TestCampaignExecutor").newInstance());
 		} catch (NullPointerException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			// Do nothing, this solution is to be replaced by using a service based approach
 		}
-		return executors.toArray(new TestResourceExecutor[executors.size()]);
+		return executors.toArray(new TestExecutor[executors.size()]);
 	}
 }
