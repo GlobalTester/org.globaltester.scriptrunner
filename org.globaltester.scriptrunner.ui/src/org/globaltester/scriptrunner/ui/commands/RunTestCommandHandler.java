@@ -157,11 +157,6 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		throw new SampleConfigSelectionException();
 	}
 	
-	protected SampleConfig getLastUsedSampleConfig() {
-		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
-		return SampleConfigManager.get(lastUsedProjectName);
-	}
-	
 	/**
 	 * This method tries to get a sample config for execution of the test cases. 
 	 * @param event
@@ -170,7 +165,7 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 	 */
 	protected SampleConfig getSampleConfig(ExecutionEvent event) throws SampleConfigSelectionException{
 		boolean selectionRequested = Boolean.parseBoolean(event.getParameter("org.globaltester.testrunner.ui.SelectSampleConfigParameter")); 
-		SampleConfig lastUsed = getLastUsedSampleConfig();
+		SampleConfig lastUsed = RunTests.getLastUsedSampleConfig();
 		if (!selectionRequested && lastUsed != null){
 			return lastUsed;
 		}

@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
+import org.globaltester.base.PreferenceHelper;
 import org.globaltester.platform.ExecutionRequirementsException;
+import org.globaltester.sampleconfiguration.SampleConfig;
+import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.scriptrunner.TestExecutionCallback.UserNotificationEvent;
 import org.osgi.framework.Bundle;
 
@@ -59,5 +62,10 @@ public class RunTests {
 			// Do nothing, this solution is to be replaced by using a service based approach
 		}
 		return executors.toArray(new TestExecutor[executors.size()]);
+	}
+	
+	public static SampleConfig getLastUsedSampleConfig() {
+		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
+		return SampleConfigManager.get(lastUsedProjectName);
 	}
 }
