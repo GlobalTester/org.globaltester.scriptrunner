@@ -23,7 +23,6 @@ import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.ui.GtUiHelper;
 import org.globaltester.base.ui.UserInteractionImpl;
 import org.globaltester.sampleconfiguration.SampleConfig;
-import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.globaltester.sampleconfiguration.ui.SampleConfigSelectorDialog;
 import org.globaltester.scriptrunner.Activator;
 import org.globaltester.scriptrunner.GtRuntimeRequirements;
@@ -77,8 +76,6 @@ public abstract class RunTestCommandHandler extends AbstractHandler {
 		}
 		
 		try{
-			new ShowTests().show(resources);
-			
 			SampleConfig config = getSampleConfig(event);
 			
 			if (config == null){
