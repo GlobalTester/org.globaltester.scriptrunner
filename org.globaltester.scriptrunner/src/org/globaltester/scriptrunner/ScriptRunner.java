@@ -17,6 +17,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.tools.debugger.Dim;
 
 /**
  * This class implements the methods of an internal shell.
@@ -47,6 +48,8 @@ public class ScriptRunner implements FileEvaluator {
 
 	private ScriptableObject scope;
 
+	private RhinoJavaScriptAccess rhinoAccess;
+
 	/**
 	 * Create ScriptRunner
 	 * 
@@ -76,8 +79,8 @@ public class ScriptRunner implements FileEvaluator {
 		this.scope = scope;
 		try {
 			// Initialize ECMAScript environment
-			RhinoJavaScriptAccess rhinoAccess = new RhinoJavaScriptAccess();
-			context = rhinoAccess.activateContext();
+			rhinoAccess = new RhinoJavaScriptAccess();
+			context = rhinoAccess.activateContext(scope);
 			ScriptRunner.runners.put(context, this);
 
 			addClassLoader(this.getClass().getClassLoader());
@@ -146,7 +149,7 @@ public class ScriptRunner implements FileEvaluator {
 			System.out.println("Command: " + command);
 			return null;
 		}
-		
+			
 		Object result = context.evaluateString(scope, command, sourceName, lineNumber, null);
 
 		// If the evaluator returns a function object, then we call
@@ -295,6 +298,13 @@ public class ScriptRunner implements FileEvaluator {
 
 	public IContainer getScriptRoot() {
 		return scriptRootDir;
+	}
+
+	public void breakNow() {
+		Dim dim = rhinoAccess.getDim();
+		if (dim != null) {
+			dim.setBreak();
+		}
 	}
 
 }
