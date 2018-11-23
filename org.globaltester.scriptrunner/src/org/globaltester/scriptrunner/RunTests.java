@@ -7,7 +7,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.globaltester.base.PreferenceHelper;
 import org.globaltester.sampleconfiguration.SampleConfig;
-import org.globaltester.sampleconfiguration.SampleConfigManager;
 import org.osgi.framework.Bundle;
 
 public class RunTests {
@@ -58,6 +57,6 @@ public class RunTests {
 	
 	public static SampleConfig getLastUsedSampleConfig() {
 		String lastUsedProjectName = PreferenceHelper.getPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), Activator.PREFERENCE_ID_LAST_USED_SAMPLE_CONFIG_PROJECT);
-		return SampleConfigManager.get(lastUsedProjectName);
+		return SampleConfig.getSampleConfigForProject(lastUsedProjectName);
 	}
 }
