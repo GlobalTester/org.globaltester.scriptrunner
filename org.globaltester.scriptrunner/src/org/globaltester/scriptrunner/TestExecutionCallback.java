@@ -31,15 +31,29 @@ public interface TestExecutionCallback {
 	public static class EventResult{
 	}
 	
+	/**
+	 *	Send an arbitrary message to the user. 
+	 * 
+	 */
 	public static class UserNotificationEvent extends Event {
 		public String message;
 	}
 	
+	/**
+	 * Send a message to the user and request to select one of the presented possibleResults.
+	 * 
+	 */
 	public static class UserQuestionEvent extends UserNotificationEvent {
 		public String [] possibleResults;
 		public List<PropertyElement> properties;
 	}
 	
+	/**
+	 * EventResult to be sent as response to a UserQuestionEvent.
+	 * 
+	 * The contained result should indicate the index of provided possbileResults from original Event.
+	 * 
+	 */
 	public static class UserQuestionEventResult extends EventResult {
 		public int result;
 	}
