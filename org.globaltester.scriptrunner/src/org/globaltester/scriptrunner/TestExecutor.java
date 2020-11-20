@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public abstract class TestExecutor {
 
+	public static final String FAMILY = "GT_TESTEXEC";
+
 	/**
 	 * @param resources
 	 *            the resources to be checked
@@ -41,7 +43,7 @@ public abstract class TestExecutor {
 
 		addRuntimeRequirements(runtimeRequirements);
 
-		Job job = getExecutionJob(resources, runtimeRequirements, callback);
+		Job job = getExecutionJob(resources, runtimeRequirements, callback, TestExecutor.FAMILY);
 		job.setUser(true);
 		job.schedule();
 
@@ -57,10 +59,11 @@ public abstract class TestExecutor {
 	 * @param resources
 	 * @param runtimeRequirements
 	 * @param callback
+	 * @param family
 	 * @return
 	 */
 	protected abstract Job getExecutionJob(List<IResource> resources, GtRuntimeRequirements runtimeRequirements,
-			TestExecutionCallback callback);
+			TestExecutionCallback callback, Object family);
 
 	/**
 	 * This abstract method allows implementations to provide additional
